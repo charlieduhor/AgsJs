@@ -1,11 +1,13 @@
-
 (function() {
     "use strict";
     
     var ags = oo.namespace("org.ags");
     
-    ags.GameObject = oo.BaseClass.extend({
+    ags.Stage = oo.BaseClass.extend({
         initialize: function() {
         },
+    },
+    {
+    	currentStage: undefined,
     });
 })();

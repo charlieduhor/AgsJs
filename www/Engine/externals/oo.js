@@ -15,7 +15,7 @@
         var parent      = window.oo.namespaces;
         var currentPart = '';
         
-        for(var i = 0, length = parts.length; i < length; i++) {
+        for (var i = 0, length = parts.length; i < length; i++) {
             currentPart = parts[i];
             
             if (parent[currentPart] === undefined) {
@@ -26,6 +26,30 @@
         }
         
         return parent;
+    };
+    
+    window.oo.parseQueryString = function(queryString) {
+    	if (queryString == undefined) {
+    		queryString = window.location.search;
+    	}
+    	
+    	if (queryString.length == 0) {
+    		return {};
+    	}
+    	
+        var match;
+        var pl        = /\+/g;  // Regex for replacing addition symbol with a space
+        var search    = /([^&=]+)=?([^&]*)/g;
+        var decode    = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
+        var urlParams = {};
+        
+        queryString = queryString.substring(1);
+
+        while (match = search.exec(queryString)) {
+           urlParams[decode(match[1])] = decode(match[2]);
+        }
+        
+        return urlParams;
     };
     
     var ctor = function() {};
@@ -71,3 +95,7 @@
     window.oo.BaseClass = function() {};
     window.oo.BaseClass.extend = extendThis;
 })();
+
+function namespace(namespaceName) {
+	return window.oo.namespace(namespaceName);
+}
