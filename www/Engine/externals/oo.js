@@ -28,6 +28,15 @@
         return parent;
     };
     
+    window.oo.getBasePath = function() {
+    	var parts = window.location.pathname.split("/");
+    	
+    	parts[parts.length - 1] = undefined;
+    	parts.length--;
+    	
+    	return window.location.protocol + "//" + parts.join("/");
+    };
+    
     window.oo.parseQueryString = function(queryString) {
     	if (queryString == undefined) {
     		queryString = window.location.search;
@@ -52,34 +61,27 @@
         return urlParams;
     };
     
-    var ctor = function() {};
-    
     function inherits(parent, protoProps, staticProps) {
         var child;
         
-        if (protoProps && protoProps.hasOwnProperty('initialize')) {
-            child = protoProps.initialize;
+        if (protoProps && _.has(protoProps, 'constructor')) {
+            child = protoProps.constructor;
         }
         else {
             child = function () {
-                return parent.apply(this.arguments);
+                return parent.apply(this, arguments);
             };
         }
         
-        _.extend(child, parent);
+        _.extend(child, parent, staticProps);
         
-        ctor.prototype = parent.prototype;
-        child.prototype = new ctor();
-        
+        var Surrogate = function(){ this.constructor = child; };
+        Surrogate.prototype = parent.prototype;
+        child.prototype = new Surrogate;
+
         if (protoProps) {
-            _.extend(child.prototype, protoProps);
+        	_.extend(child.prototype, protoProps);
         }
-        
-        if (staticProps) {
-            _.extend(child, staticProps);
-        }
-        
-        child.prototype.initialize = child;
         
         child.__super__ = parent.prototype;
         return child;
