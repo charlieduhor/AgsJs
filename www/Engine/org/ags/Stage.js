@@ -1,15 +1,21 @@
 (function() {
     "use strict";
     
-    var ags = oo.namespace("org.ags");
+    if (window["ags"] == undefined) {
+    	window.ags = {};
+    }
     
     function Stage(parameters) {
+    	if (window.ags["stage"] === undefined) {
+    		window.ags.stage = this;
+    	}
+    	
     	this.parameters = {};
     	
         _.extend(this.parameters, {
         	game:     "default",
         	baseURL:  "Games/",
-        	selector: "#stage",
+        	selector: "stage",
         }, parameters);
         
         if (this.parameters.baseURL.slice(-1) != "/") {
@@ -24,20 +30,40 @@
         	this.parameters.url += "/";
         }
 
-        $(this.parameters.selector).html("<canvas></canvas>");
+        var div = document.getElementById(this.parameters.selector);
+        
+        if (div == undefined) {
+        	alert("Failed to find a #" + this.parameters.selector + " element on the page.");
+        }
+        
+        this.canvas = document.createElement("canvas");
+        div.appendChild(this.canvas);
         
         this.loadURL("settings.json");
     };
     
+    Stage.prototype.gameObjects = [];
+    
     Stage.prototype.loadURL = function(url) {
-    	$.getJSON(this.parameters.url + url, function(data) {
-    		console.log(data);
+    	var that = this;
+    	
+    	$.ajax({
+    		url:      that.parameters.url + url,
+    		type:     "get",
+    		dataType: "json",
+    		async:    true,
+    		
+    		success: function(data) {
+    			console.log(data);
+    		},
+    		
+    		error: function(xhr, status, errorThrown) {
+    			alert(status);
+    		}
       	});
     };
     
-    Stage.currentStage = undefined;
-    
-    ags.Stage = function(parameters) {
+    defineClass("org.ags.Stage", function(parameters) {
     	return new Stage(parameters);
-    };
+    });
 })();

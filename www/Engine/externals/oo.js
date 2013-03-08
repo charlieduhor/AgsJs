@@ -11,7 +11,15 @@
     }
 
     window.oo.namespace = function(namespaceString) {
-        var parts       = namespaceString.split('.');
+        var parts;
+        
+        if (namespaceString instanceof Array) {
+        	parts = namespaceString;
+        }
+        else {
+        	parts = namespaceString.split('.');
+        }
+        
         var parent      = window.oo.namespaces;
         var currentPart = '';
         
@@ -100,4 +108,15 @@
 
 function namespace(namespaceName) {
 	return window.oo.namespace(namespaceName);
+}
+
+function defineClass(fullClassName, constructor) {
+	var parts     = fullClassName.split(".");
+	var className = parts[parts.length - 1];
+	
+	parts.length--;
+	
+	var ns = window.oo.namespace(parts);
+	
+	ns[className] = constructor;
 }
