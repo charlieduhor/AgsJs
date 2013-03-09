@@ -39,27 +39,69 @@
         this.canvas = document.createElement("canvas");
         div.appendChild(this.canvas);
         
-        this.loadURL("settings.json");
+        var that = this;
+        
+        this.loadURL("settings.json", function(data) {
+        	that.canvas.width  = data.resolution.width;
+        	that.canvas.height = data.resolution.height;
+        	
+            that.loadImage("Pixelart-tv-iso.png", function(data) {
+            	var c = that.canvas.getContext("2d");
+            	
+            	c.imageSmoothingEnabled       = false;
+            	c.mozImageSmoothingEnabled    = false;
+            	c.webkitImageSmoothingEnabled = false;
+            	c.drawImage(data, 0, 0);
+            });
+        });
     };
     
     Stage.prototype.gameObjects = [];
     
-    Stage.prototype.loadURL = function(url) {
-    	var that = this;
+    Stage.prototype.loadImage = function(url, callbackSuccess, callbackFail) {
+    	var that    = this;
+    	var fullUrl = that.parameters.url + url;
+    	var errorWrapper;
+    	
+    	if (callbackFail === undefined) {
+    		errorWrapper = function() {
+    			console.error("Error loading image '" + fullUrl + "'");
+				alert("Error loading file '" + fullUrl + "'");
+    		};
+    	}
+    	else {
+    		errorWrapper = function() {
+        		callbackFail(img, url);
+        	};
+    	}
+    	
+    	var img = new Image();
+    	
+    	img.onload  = function() { callbackSuccess(img, url); };
+    	img.onerror = errorWrapper;
+    	img.onabort = errorWrapper;
+    	img.src     = fullUrl;
+    	return img;
+    };
+    
+    Stage.prototype.loadURL = function(url, callbackSuccess, callbackFail) {
+    	var that    = this;
+    	var fullUrl = that.parameters.url + url;
+    	
+    	if (callbackFail === undefined) {
+    		callbackFail = function(xhr, status, errorThrown) {
+    			console.error("Error loading file '" + fullUrl + "'. Error "+ xhr.status + ": " + errorThrown);
+				alert("Error loading file '" + fullUrl + "'\n\nError "+ xhr.status + ": " + errorThrown);
+    		};
+    	}
     	
     	$.ajax({
-    		url:      that.parameters.url + url,
+    		url:      fullUrl,
     		type:     "get",
     		dataType: "json",
     		async:    true,
-    		
-    		success: function(data) {
-    			console.log(data);
-    		},
-    		
-    		error: function(xhr, status, errorThrown) {
-    			alert(status);
-    		}
+    		success:  callbackSuccess,
+    		error:    callbackFail,
       	});
     };
     
