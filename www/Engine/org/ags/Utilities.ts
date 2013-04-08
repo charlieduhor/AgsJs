@@ -1,4 +1,6 @@
 
+"use strict";
+
 module org.ags {
     export function getBasePath() : string {
         var parts = window.location.pathname.split("/");

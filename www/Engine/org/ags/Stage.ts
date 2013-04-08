@@ -84,13 +84,18 @@ module org.ags {
         public loadDataAsync(
             url : string, 
             callbackSuccess : (data : any, url : string) => any,
-            callbackFail    : (errorCode : number, errorText : string, url : string) => any) : XMLHttpRequest {
+            callbackFail    : (errorCode : number, errorText : string, url : string) => any,
+            dataProcessor?  : (data : any) => any) : XMLHttpRequest {
             var xhr     : XMLHttpRequest = new XMLHttpRequest();
             var fullUrl : string         = this.url + url;
             
+            if (dataProcessor === undefined) {
+                dataProcessor = function(d) { return d; }
+            }
+            
             xhr.onload = function() {
                 if (xhr.readyState === 4) {
-                    callbackSuccess(xhr.response, url);
+                    callbackSuccess(dataProcessor(xhr.response), url);
                 }
             };
             
@@ -112,7 +117,7 @@ module org.ags {
             return xhr;
         }
         
-        public loadData(url : string) : any {
+        public loadData(url : string, dataProcessor?  : (data : any) => any) : any {
             var xhr     : XMLHttpRequest = new XMLHttpRequest();
             var fullUrl : string         = this.url + url;
             
@@ -120,7 +125,11 @@ module org.ags {
             xhr.send();
             
             if (xhr.status === 200) {
-                return xhr.response;
+                if (dataProcessor === undefined) {
+                    return xhr.response;
+                }
+                
+                return dataProcessor(xhr.response);
             }
             
             throw {
@@ -132,20 +141,24 @@ module org.ags {
         }
         
         public loadJson(url : string) : any {
-            return this.loadData(url);
+            return this.loadData(url, JSON.parse);
         }
         
         public loadJsonAsync(
             url : string, 
             callbackSuccess : (data : any, url : string) => any,
             callbackFail    : (errorCode : number, errorText : string, url : string) => any) : XMLHttpRequest {
-            return this.loadDataAsync(url, callbackSuccess, callbackFail);
+            return this.loadDataAsync(url, callbackSuccess, callbackFail, JSON.parse);
         }
         
         public loadSettings() {
+            var that = this;
+            
             this.loadJsonAsync("settings.json",
             
             function(data : any) : any {
+                that.canvas.width  = data.resolution.width;
+                that.canvas.height = data.resolution.height;
             },
             
             function (errorCode : number, errorString : string) : any {
