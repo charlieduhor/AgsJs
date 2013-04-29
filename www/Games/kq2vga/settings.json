@@ -2,5 +2,9 @@
     "resolution": {
         "height": 240,
         "width": 320
+    },
+    
+    "loop": {
+    	"interval": "NTSC"
     }
 }

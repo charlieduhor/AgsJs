@@ -1,5 +1,27 @@
 
 module org.ags {
+	export interface GameResolutionSettings {
+		width  : number;
+		height : number;
+	};
+	
+	export interface GameLoopSettings {
+		interval : any;
+	};
+
+	export interface GameSettings {
+		resolution : GameResolutionSettings;
+		loop       : GameLoopSettings;
+	};
+	
+	export interface UpdatableComponent extends OrderableComponent {
+		update();
+	};
+	
+	export interface DrawableComponent extends OrderableComponent {
+		draw();
+	};
+
     export class StageParameters {
         public game     : string = "default";
         public baseURL  : string = "Games/";
@@ -7,11 +29,12 @@ module org.ags {
     };
 
     export class Stage {
-        public game     : string;
-        public baseURL  : string;
-        public selector : string;
-        public url      : string;
-        public canvas   : HTMLCanvasElement;
+        public game         : string;
+        public baseURL      : string;
+        public selector     : string;
+        public url          : string;
+        public canvas       : HTMLCanvasElement;
+        public gameSettings : GameSettings;
 
         public gameObjects : org.ags.GameObject[] = [];
         
@@ -157,13 +180,38 @@ module org.ags {
             this.loadJsonAsync("settings.json",
             
             function(data : any) : any {
-                that.canvas.width  = data.resolution.width;
-                that.canvas.height = data.resolution.height;
+            	that.setSettings(data);
+            	that.start();
             },
             
             function (errorCode : number, errorString : string) : any {
                 console.error(errorString);
             });
+        }
+        
+        public setSettings(settings : GameSettings) {
+        	this.gameSettings  = settings;
+            this.canvas.width  = settings.resolution.width;
+            this.canvas.height = settings.resolution.height;
+            
+            if (typeof settings.loop.interval == "string") {
+            	if (settings.loop.interval === "NTSC") {
+            		settings.loop.interval = 1001 / 30;
+            	}
+            	else if (settings.loop.interval === "PAL") {
+            		settings.loop.interval = 1001 / 25;
+            	}
+            	else {
+            		throw "Invalid loop interval value: " + settings.loop.interval;
+            	}
+            }
+        }
+        
+        public start() {
+        	setInterval(this.loop, this.gameSettings.loop.interval);
+        }
+        
+        public loop() {
         }
     };
 }

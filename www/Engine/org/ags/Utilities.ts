@@ -33,4 +33,17 @@ module org.ags {
         
         return urlParams;
     };
+    
+    export function vformat(s : string, args : string[]) {
+	    for (var i = 0; i < args.length; i++) {
+	      var reg = new RegExp("\\{" + i + "\\}", "gm");
+	      s = s.replace(reg, args[i]);
+	    }
+	
+	    return s;
+    }
+
+    export function format(s : string, ...args : string[]) {
+	    return vformat(s, args);
+    }
 }
