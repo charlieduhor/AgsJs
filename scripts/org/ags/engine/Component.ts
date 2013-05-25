@@ -1,5 +1,5 @@
 
-module org.ags {
+module org.ags.engine {
     export class Component {
     };
 }

@@ -1,5 +1,5 @@
 
-module org.ags {
+module org.ags.engine {
 	export class Log {
 		public static info(s : string, ...args : string[]) {
 			console.log(s.vformat(args));

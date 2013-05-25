@@ -1,5 +1,5 @@
 
-module org.ags {
+module org.ags.engine {
 	export interface GameResolutionSettings {
 		width  : number;
 		height : number;
@@ -36,7 +36,7 @@ module org.ags {
         public canvas       : HTMLCanvasElement;
         public gameSettings : GameSettings;
 
-        public gameObjects : org.ags.GameObject[] = [];
+        public gameObjects : org.ags.engine.GameObject[] = [];
         
         constructor(parameters : StageParameters) {
             this.game     = parameters.game;

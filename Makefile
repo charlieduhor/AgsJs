@@ -7,7 +7,8 @@ FILES = \
    scripts/org/ags/engine/GameObject.ts \
    scripts/org/ags/engine/Stage.ts \
    scripts/org/ags/engine/components/Transform.ts \
-   scripts/org/ags/engine/Main.ts
+   scripts/org/ags/engine/Main.ts \
+   scripts/org/ags/editor/Main.ts
 
 TSC = tsc
 

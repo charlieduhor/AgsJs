@@ -1,5 +1,5 @@
 
-import ags = module(org.ags);
+import ags = module(org.ags.engine);
     
 function EngineMain() {
     var parameters : ags.StageParameters = new ags.StageParameters();

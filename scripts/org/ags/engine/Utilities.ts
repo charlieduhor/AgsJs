@@ -6,7 +6,7 @@ interface String {
     format(...args : string[]) : string;
 }
 
-module org.ags {
+module org.ags.engine {
     export function getBasePath() : string {
         var parts = window.location.pathname.split("/");
         

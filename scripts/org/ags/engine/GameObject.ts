@@ -1,6 +1,6 @@
 
-module org.ags {
+module org.ags.engine {
     export class GameObject {
-        public transform : org.ags.components.Transform;
+        public transform : org.ags.engine.components.Transform;
     };
 }
