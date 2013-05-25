@@ -13,3 +13,4 @@ scripts/org/ags/engine/OrderedComponents.js
 scripts/org/ags/engine/Stage.js
 scripts/org/ags/engine/Utilities.js
 scripts/org/ags/engine/components/Transform.js
+scripts/org/ags/editor/Main.js
