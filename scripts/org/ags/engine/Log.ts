@@ -2,15 +2,15 @@
 module org.ags {
 	export class Log {
 		public static info(s : string, ...args : string[]) {
-			console.log(vformat(s, args));
+			console.log(s.vformat(args));
 		}
 		
 		public static error(s : string, ...args : string[]) {
-			console.error(vformat(s, args));
+			console.error(s.vformat(args));
 		}
 		
 		public static warning(s : string, ...args : string[]) {
-			console.warn(vformat(s, args));
+			console.warn(s.vformat(args));
 		}
 	}
 }

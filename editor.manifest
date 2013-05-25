@@ -4,3 +4,12 @@ CACHE:
 /favicon.ico
 editor.html
 editor.css
+scripts/JavaScriptExtensions.js
+scripts/org/ags/engine/Component.js
+scripts/org/ags/engine/GameObject.js
+scripts/org/ags/engine/Log.js
+scripts/org/ags/engine/Main.js
+scripts/org/ags/engine/OrderedComponents.js
+scripts/org/ags/engine/Stage.js
+scripts/org/ags/engine/Utilities.js
+scripts/org/ags/engine/components/Transform.js

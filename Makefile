@@ -1,15 +1,15 @@
 
 FILES = \
-   www/Engine/org/ags/Utilities.ts \
-   www/Engine/org/ags/Log.ts \
-   www/Engine/org/ags/OrderedComponents.ts \
-   www/Engine/org/ags/Component.ts \
-   www/Engine/org/ags/GameObject.ts \
-   www/Engine/org/ags/Stage.ts \
-   www/Engine/org/ags/components/Transform.ts \
-   www/Engine/Start.ts
+   scripts/org/ags/engine/Utilities.ts \
+   scripts/org/ags/engine/Log.ts \
+   scripts/org/ags/engine/OrderedComponents.ts \
+   scripts/org/ags/engine/Component.ts \
+   scripts/org/ags/engine/GameObject.ts \
+   scripts/org/ags/engine/Stage.ts \
+   scripts/org/ags/engine/components/Transform.ts \
+   scripts/org/ags/engine/Main.ts
 
 TSC = tsc
 
 all:
-	$(TSC) --target ES5 --out www/player.js $(FILES)
+	$(TSC) --target ES5 $(FILES)
