@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html manifest="editor.manifest">
+<html>
     <head>
         <link rel="stylesheet" type="text/css" href="editor.css">
         
         <!-- JavaScript modules -->
-        <script type="text/javascript" src="scripts/JavaScriptExtensions.js" async></script>
+        <script type="text/javascript" src="scripts/JavaScriptExtensions.js" defer></script>
         
         <!-- Engine TypeScript modules -->
-        <script type="text/javascript" src="scripts/org/ags/engine/Component.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/GameObject.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Log.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Main.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/OrderedComponents.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Stage.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Utilities.js" async></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/components/Transform.js" async></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Cell.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Component.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/GameObject.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Log.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Loop.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Main.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/OrderedComponents.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Stage.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/Utilities.js" defer></script>
+        <script type="text/javascript" src="scripts/org/ags/engine/components/Transform.js" defer></script>
     </head>
-    <body onload="EditorMain()">
+    <body onload="EngineMain()">
         <div id="stage"></div>
     </body>
 </html>

@@ -14,12 +14,12 @@ module org.ags.engine {
 		loop       : GameLoopSettings;
 	};
 	
-	export interface UpdatableComponent extends OrderableComponent {
+	export interface IUpdatableComponent extends IOrderableComponent {
 		update();
 	};
 	
-	export interface DrawableComponent extends OrderableComponent {
-		draw();
+	export interface IDrawableComponent extends IOrderableComponent {
+		drawCanvas(context : CanvasRenderingContext2D);
 	};
 
     export class StageParameters {
@@ -36,6 +36,9 @@ module org.ags.engine {
         public canvas       : HTMLCanvasElement;
         public gameSettings : GameSettings;
 
+        public updatableComponents : OrderedComponents = new OrderedComponents();
+        public drawableComponents  : OrderedComponents = new OrderedComponents();
+        
         public gameObjects : org.ags.engine.GameObject[] = [];
         
         constructor(parameters : StageParameters) {
@@ -116,18 +119,22 @@ module org.ags.engine {
                 dataProcessor = function(d) { return d; }
             }
             
-            xhr.onload = function() {
-                if (xhr.readyState === 4) {
-                    callbackSuccess(dataProcessor(xhr.response), url);
-                }
-            };
-            
-            xhr.onerror = xhr.onabort = function() {
+            var errorFunction = function() {
                 if (xhr.status !== 0) {
                     callbackFail(xhr.status, xhr.statusText, url);
                 }
             };
             
+            xhr.onload = function() {
+                if (xhr.status >= 400) {
+                    errorFunction();
+                }
+                else if (xhr.readyState === 4) {
+                    callbackSuccess(dataProcessor(xhr.response), url);
+                }
+            };
+            
+            xhr.onerror = xhr.onabort = errorFunction;
             xhr.open("GET", fullUrl, true);
             
             try {
@@ -178,15 +185,14 @@ module org.ags.engine {
             var that = this;
             
             this.loadJsonAsync("settings.json",
+                function(data : any) : any {
+                    that.setSettings(data);
+                    that.start();
+                },
             
-            function(data : any) : any {
-            	that.setSettings(data);
-            	that.start();
-            },
-            
-            function (errorCode : number, errorString : string) : any {
-                console.error(errorString);
-            });
+                function (errorCode : number, errorString : string) : any {
+                    console.error(errorString);
+                });
         }
         
         public setSettings(settings : GameSettings) {
@@ -194,7 +200,7 @@ module org.ags.engine {
             this.canvas.width  = settings.resolution.width;
             this.canvas.height = settings.resolution.height;
             
-            if (typeof settings.loop.interval == "string") {
+            if (typeof settings.loop.interval === "string") {
             	if (settings.loop.interval === "NTSC") {
             		settings.loop.interval = 1001 / 30;
             	}
@@ -207,11 +213,26 @@ module org.ags.engine {
             }
         }
         
+        public createGameObject(name : string) : GameObject {
+            var go       : GameObject = new GameObject(this, name);
+            var newIndex : number     = this.gameObjects.length;
+            
+            this.gameObjects[newIndex] = go;
+            return go;
+        }
+                
         public start() {
+            this.test();
         	setInterval(this.loop, this.gameSettings.loop.interval);
         }
         
         public loop() {
+        }
+        
+        public test() {
+            var go : GameObject = this.createGameObject("Test");
+            
+            go.addComponent(new components.Transform());
         }
     };
 }
