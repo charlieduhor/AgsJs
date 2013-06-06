@@ -5,7 +5,7 @@ module org.ags.engine {
 	};
 	
 	export class OrderedComponents {
-		components : IOrderableComponent[];
+		public components : IOrderableComponent[];
 	
 		constructor() {
 			this.components = [];
@@ -47,10 +47,6 @@ module org.ags.engine {
 				
 				return this._add(component, b1, i);
 			}
-		}
-		
-		public getComponents() : IOrderableComponent[] {
-			return this.components;
 		}
 		
 		public debugOrders() : string {

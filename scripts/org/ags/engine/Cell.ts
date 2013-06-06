@@ -8,12 +8,42 @@ module org.ags.engine {
     }
 
     export class Cell implements ICell {
-        public image   : HTMLImageElement;
-        public centerX : number = 0;
-        public centerY : number = 0;
+        private image       : HTMLImageElement;
+        private imageX      : number;
+        private imageY      : number;
+        private imageWidth  : number;
+        private imageHeight : number;
+        private centerX     : number;
+        private centerY     : number;
+        
+        constructor(image : HTMLImageElement, imageX : number, imageY : number, imageWidth : number, imageHeight : number, centerX : number, centerY : number) {
+            this.image       = image;
+            this.imageX      = imageX;
+            this.imageY      = imageY;
+            this.imageWidth  = imageWidth;
+            this.imageHeight = imageHeight;
+            this.centerX     = centerX;
+            this.centerY     = centerY;
+        }
         
         public drawCanvas(context : CanvasRenderingContext2D, x : number, y : number) {
-            context.drawImage(this.image, x - this.centerX, y - this.centerY);
+            var iw : number = this.imageWidth;
+            var ih : number = this.imageHeight;
+            
+            context.drawImage(
+                this.image,
+                
+                // Output
+                x - this.centerX,
+                y - this.centerY,
+                iw,
+                ih,
+                
+                // Input
+                this.imageX,
+                this.imageY,
+                iw,
+                ih);
         }
         
         public hitTest(drawX : number, drawY : number, hitX : number, hitY : number) : number {

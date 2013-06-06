@@ -3,10 +3,23 @@
 
 module org.ags.engine {
     export class Component implements IOrderableComponent {
-		public order : number;
+        public gameObject : GameObject;
+		public order      : number;
         
         constructor() {
             this.order = 0;
+        }
+        
+        public setupGameObject(gameObject : GameObject) : bool {
+            this.gameObject = gameObject;
+            return true;
+        }
+        
+        public requiredComponents() : any[] {
+            return [];
+        }
+        
+        public init() {
         }
     };
 }

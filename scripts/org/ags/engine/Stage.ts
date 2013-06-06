@@ -1,4 +1,6 @@
 
+"use strict";
+
 module org.ags.engine {
 	export interface GameResolutionSettings {
 		width  : number;
@@ -29,12 +31,13 @@ module org.ags.engine {
     };
 
     export class Stage {
-        public game         : string;
-        public baseURL      : string;
-        public selector     : string;
-        public url          : string;
-        public canvas       : HTMLCanvasElement;
-        public gameSettings : GameSettings;
+        public game          : string;
+        public baseURL       : string;
+        public selector      : string;
+        public url           : string;
+        public canvas        : HTMLCanvasElement;
+        public canvasContext : CanvasRenderingContext2D;
+        public gameSettings  : GameSettings;
 
         public updatableComponents : OrderedComponents = new OrderedComponents();
         public drawableComponents  : OrderedComponents = new OrderedComponents();
@@ -74,6 +77,8 @@ module org.ags.engine {
             
             this.canvas = <HTMLCanvasElement>document.createElement("canvas");
             div.appendChild(this.canvas);
+            
+            this.canvasContext = this.canvas.getContext("2d");
         }
         
         public loadImage(
@@ -222,17 +227,37 @@ module org.ags.engine {
         }
                 
         public start() {
+            var that = this;
+            
             this.test();
-        	setInterval(this.loop, this.gameSettings.loop.interval);
+        	setInterval(function () { that.loop(); }, this.gameSettings.loop.interval);
         }
         
         public loop() {
+            var index : number, count : number;
+            
+            // Updates
+            var updates : IUpdatableComponent[] = <IUpdatableComponent[]>this.updatableComponents.components;
+            
+            count = updates.length;
+            for (index = 0; index < count; index++) {
+                updates[index].update();
+            }
+            
+            // Drawable
+            var drawables   : IDrawableComponent[]     = <IDrawableComponent[]>this.drawableComponents.components;
+            var drawContext : CanvasRenderingContext2D = this.canvasContext;
+            
+            count = drawables.length;
+            for (index = 0; index < count; index++) {
+                drawables[index].drawCanvas(drawContext);
+            }
         }
         
         public test() {
             var go : GameObject = this.createGameObject("Test");
             
-            go.addComponent(new components.Transform());
+            go.addComponent(new components.StaticSprite());
         }
     };
 }
