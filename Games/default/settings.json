@@ -6,5 +6,7 @@
     
     "loop": {
     	"interval": "NTSC"
-    }
+    },
+    
+    "startupScene": "TestRoom"
 }

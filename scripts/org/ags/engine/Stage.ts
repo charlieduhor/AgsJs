@@ -12,8 +12,9 @@ module org.ags.engine {
 	};
 
 	export interface GameSettings {
-		resolution : GameResolutionSettings;
-		loop       : GameLoopSettings;
+		resolution       : GameResolutionSettings;
+		loop             : GameLoopSettings;
+        startupScene     : string;
 	};
 	
 	export interface IUpdatableComponent extends IOrderableComponent {
@@ -30,6 +31,30 @@ module org.ags.engine {
         public selector : string = "stage";
     };
 
+    class StageLoadError implements ILoadError {
+        public loadErrorCode   : number;
+        public loadErrorString : string;
+        public loadUrl         : string;
+        
+        public errorCode   : number;
+        public errorString : string;
+        public url         : string;
+        
+        constructor(errorCode : number, errorString : string, url : string) {
+            this.loadErrorString = errorString;
+            this.loadErrorCode   = errorCode;
+            this.loadUrl         = url;
+            
+            this.errorString = errorString;
+            this.errorCode   = errorCode;
+            this.url         = url;
+        }
+        
+        toString() : string {
+            return "{0}: {1} ({2})".format(this.loadErrorString, this.loadErrorCode, this.loadUrl);
+        }
+    };
+
     export class Stage {
         public game          : string;
         public baseURL       : string;
@@ -39,10 +64,7 @@ module org.ags.engine {
         public canvasContext : CanvasRenderingContext2D;
         public gameSettings  : GameSettings;
 
-        public updatableComponents : OrderedComponents = new OrderedComponents();
-        public drawableComponents  : OrderedComponents = new OrderedComponents();
-        
-        public gameObjects : org.ags.engine.GameObject[] = [];
+        public currentSet    : Set;
         
         constructor(parameters : StageParameters) {
             this.game     = parameters.game;
@@ -84,24 +106,17 @@ module org.ags.engine {
         public loadImage(
             url             : string,
             callbackSuccess : (image : HTMLImageElement, url? : string) => any,
-            callbackFail    : (errorCode? : number, errorText? : string, url? : string) => any) : HTMLImageElement {
+            callbackFail    : (error : ILoadError) => any) : HTMLImageElement {
             
             var fullUrl      : string = this.url + url;
-            var errorWrapper : () => any;
             
             if (callbackFail === undefined) {
-                errorWrapper = function() {
-                    var errorMessage : string = "Error loading image '" + fullUrl + "'";
-                
-                    console.error(errorMessage);
-                    alert(errorMessage);
-                };
+                throw new StageLoadError(-1, "You must specify an load failure handler.", url);
             }
-            else {
-                errorWrapper = function() {
-                    callbackFail(-1, "Failed to load image", url);
-                };
-            }
+            
+            var errorWrapper = function() {
+                callbackFail(new StageLoadError(-1, "Failed to load image", url));
+            };
             
             var img : HTMLImageElement = new HTMLImageElement();
             
@@ -115,7 +130,7 @@ module org.ags.engine {
         public loadDataAsync(
             url : string, 
             callbackSuccess : (data : any, url : string) => any,
-            callbackFail    : (errorCode : number, errorText : string, url : string) => any,
+            callbackFail    : (error : ILoadError) => any,
             dataProcessor?  : (data : any) => any) : XMLHttpRequest {
             var xhr     : XMLHttpRequest = new XMLHttpRequest();
             var fullUrl : string         = this.url + url;
@@ -126,7 +141,7 @@ module org.ags.engine {
             
             var errorFunction = function() {
                 if (xhr.status !== 0) {
-                    callbackFail(xhr.status, xhr.statusText, url);
+                    callbackFail(new StageLoadError(xhr.status, xhr.statusText, url));
                 }
             };
             
@@ -146,7 +161,7 @@ module org.ags.engine {
                 xhr.send();
             }
             catch (e) {
-                callbackFail(e.code, e.message, url);
+                callbackFail(new StageLoadError(e.code, e.message, url));
             }
             
             return xhr;
@@ -167,12 +182,7 @@ module org.ags.engine {
                 return dataProcessor(xhr.response);
             }
             
-            throw {
-                errorCode: xhr.status,
-                errorText: xhr.statusText,
-                url:       url,
-                request:   xhr,
-            };
+            throw new StageLoadError(xhr.status, xhr.statusText, url);
         }
         
         public loadJson(url : string) : any {
@@ -182,7 +192,7 @@ module org.ags.engine {
         public loadJsonAsync(
             url : string, 
             callbackSuccess : (data : any, url : string) => any,
-            callbackFail    : (errorCode : number, errorText : string, url : string) => any) : XMLHttpRequest {
+            callbackFail    : (error : ILoadError) => any) : XMLHttpRequest {
             return this.loadDataAsync(url, callbackSuccess, callbackFail, JSON.parse);
         }
         
@@ -195,12 +205,12 @@ module org.ags.engine {
                     that.start();
                 },
             
-                function (errorCode : number, errorString : string) : any {
-                    console.error(errorString);
+                function (error : ILoadError) : any {
+                    this.fatalError("Failed to load game settings", error);
                 });
         }
         
-        public setSettings(settings : GameSettings) {
+        private setSettings(settings : GameSettings) {
         	this.gameSettings  = settings;
             this.canvas.width  = settings.resolution.width;
             this.canvas.height = settings.resolution.height;
@@ -218,46 +228,58 @@ module org.ags.engine {
             }
         }
         
-        public createGameObject(name : string) : GameObject {
-            var go       : GameObject = new GameObject(this, name);
-            var newIndex : number     = this.gameObjects.length;
-            
-            this.gameObjects[newIndex] = go;
-            return go;
-        }
-                
         public start() {
             var that = this;
             
-            this.test();
-        	setInterval(function () { that.loop(); }, this.gameSettings.loop.interval);
+            this.currentScene = this.gameSettings.startupScene;
         }
         
-        public loop() {
-            var index : number, count : number;
-            
-            // Updates
-            var updates : IUpdatableComponent[] = <IUpdatableComponent[]>this.updatableComponents.components;
-            
-            count = updates.length;
-            for (index = 0; index < count; index++) {
-                updates[index].update();
+        public get currentScene() : string {
+            if (this.currentSet === undefined) {
+                return undefined;
             }
             
-            // Drawable
-            var drawables   : IDrawableComponent[]     = <IDrawableComponent[]>this.drawableComponents.components;
-            var drawContext : CanvasRenderingContext2D = this.canvasContext;
-            
-            count = drawables.length;
-            for (index = 0; index < count; index++) {
-                drawables[index].drawCanvas(drawContext);
-            }
+            return this.currentSet.name;
         }
         
-        public test() {
-            var go : GameObject = this.createGameObject("Test");
+        public set currentScene(sceneName : string) {
+            if (this.currentSet) {
+                if (this.currentSet.name === sceneName) {
+                    return;
+                }
+            }
             
-            go.addComponent(new components.StaticSprite());
+            var that = this;
+            var newSet : Set = new Set(this, sceneName);
+            
+            this.loadJsonAsync(
+                "scenes/" + sceneName + ".json",
+                function(data : any) : any {
+                    newSet.load(
+                        data,
+                        function() {
+                            that.finishedLoadingScene(newSet);
+                        },
+                        function(error : IError) {
+                            Log.error("Failed to load scene {0}. {1}", sceneName, error.toString());
+                        });
+                },
+                function(error : ILoadError) {
+                    Log.error("Failed to load scene {0}. {1}", sceneName, error.toString());
+                });
+        }
+        
+        private finishedLoadingScene(newSet : Set) {
+            var that = this;
+            
+            if (this.currentSet === undefined) {
+                setInterval(function () { that.currentSet.loop(); }, this.gameSettings.loop.interval);
+            }
+            
+            this.currentSet = newSet;
+        }
+        
+        public fatalError(message : string, errorInfo : IError) {
         }
     };
 }

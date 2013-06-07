@@ -3,14 +3,18 @@
 
 module org.ags.engine {
     export class GameObject {
-        public stage      : org.ags.engine.Stage;
+        public owner      : org.ags.engine.Set;
         public name       : string;
         public components : Component[] = [];
         public transform  : org.ags.engine.components.Transform;
         
-        constructor(stage : Stage, name : string) {
-            this.stage = stage;
+        constructor(owner : Set, name : string) {
+            this.owner = owner;
             this.name  = name;
+        }
+        
+        public get stage() {
+            return this.owner.stage;
         }
         
         public hasComponent(componentClass : any) : bool {
@@ -61,7 +65,7 @@ module org.ags.engine {
             
             if (m !== undefined) {
                 if (typeof m === "function") {
-                    this.stage.drawableComponents.add(component);
+                    this.owner.drawableComponents.add(component);
                 }
             }
             
@@ -69,7 +73,7 @@ module org.ags.engine {
             
             if (m !== undefined) {
                 if (m === "function") {
-                    this.stage.updatableComponents.add(component);
+                    this.owner.updatableComponents.add(component);
                 }
             }
         }

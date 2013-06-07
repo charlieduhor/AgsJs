@@ -1,0 +1,16 @@
+{
+    "abb336be-959f-40c0-9258-24ae27c44eaa": {
+        "className": "org.ags.engine.GameObject",
+        "name": "Backgrounds",
+        "components": [
+            {
+                "className": "org.ags.engine.components.StaticSprite",
+                "order": 1
+            },
+            {
+                "className": "org.ags.engine.components.StaticSprite",
+                "order": 2
+            }
+        ]
+    }
+}
