@@ -12,5 +12,18 @@
                 "order": 2
             }
         ]
+    },
+    "0ca92a76-aa7c-42fd-a095-30d8355faeb2": {
+        "className": "org.ags.engine.Cell",
+        "image": {
+            "className": "HTMLImageElement",
+            "url": "sprites/tv/tv.png"
+        },
+        "imageX": 0,
+        "imageY": 0,
+        "imageWidth": 64,
+        "imageHeight": 64,
+        "centerX": 32,
+        "centerY": 64
     }
 }

@@ -118,7 +118,7 @@ module org.ags.engine {
                 callbackFail(new StageLoadError(-1, "Failed to load image", url));
             };
             
-            var img : HTMLImageElement = new HTMLImageElement();
+            var img : HTMLImageElement = <HTMLImageElement>document.createElement("img");
             
             img.onload  = function() { callbackSuccess(img, url); };
             img.onerror = errorWrapper;

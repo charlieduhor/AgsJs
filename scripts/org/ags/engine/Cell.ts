@@ -77,5 +77,9 @@ module org.ags.engine {
             
             return 1;
         }
+        
+        public deserialized() {
+            console.log(this.image);
+        }
     }
 }
