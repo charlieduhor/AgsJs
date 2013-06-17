@@ -1,0 +1,92 @@
+{
+  "externals": [
+    "/characters/roger_wilco.json"
+  ],
+  "abb336be-959f-40c0-9258-24ae27c44eaa": {
+    "className": "org.ags.engine.GameObject",
+    "name": "Background-04",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "className": "org.ags.engine.components.StaticSprite",
+        "order": 4,
+        "cell": {
+          "className": "org.ags.engine.Cell",
+          "image": {
+            "className": "HTMLImageElement",
+            "url": "background-04.png",
+            "urlContentLength": 1154
+          },
+          "imageX": 0,
+          "imageY": 0,
+          "imageWidth": 640,
+          "imageHeight": 336,
+          "centerX": 0,
+          "centerY": 0
+        }
+      }
+    ]
+  },
+  "057d4886-dd3a-45d4-8c34-169119c9466d": {
+    "className": "org.ags.engine.GameObject",
+    "name": "Background-07",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "className": "org.ags.engine.components.StaticSprite",
+        "order": 7,
+        "cell": {
+          "className": "org.ags.engine.Cell",
+          "image": {
+            "className": "HTMLImageElement",
+            "url": "background-07.png",
+            "urlContentLength": 127
+          },
+          "imageX": 0,
+          "imageY": 0,
+          "imageWidth": 16,
+          "imageHeight": 146,
+          "centerX": 0,
+          "centerY": 0
+        }
+      }
+    ]
+  },
+  "496ca718-c381-4769-9c31-f0e8c8ac30f6": {
+    "className": "org.ags.engine.GameObject",
+    "name": "Background-15",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 88,
+        "y": 12
+      },
+      {
+        "className": "org.ags.engine.components.StaticSprite",
+        "order": 7,
+        "cell": {
+          "className": "org.ags.engine.Cell",
+          "image": {
+            "className": "HTMLImageElement",
+            "url": "background-15.png",
+            "urlContentLength": 219
+          },
+          "imageX": 0,
+          "imageY": 0,
+          "imageWidth": 352,
+          "imageHeight": 194,
+          "centerX": 0,
+          "centerY": 0
+        }
+      }
+    ]
+  }
+}

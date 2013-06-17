@@ -1,0 +1,27 @@
+{
+  "86e25a74-9621-479f-8960-3cbe3d4c7d60": {
+    "className": "HTMLImageElement",
+    "url": "roger_wilco.png",
+    "urlContentLength": 1017
+  },
+  "83ebd92e-ce02-43ab-adfe-c19b5a46f3d5": {
+    "className": "org.ags.engine.Cell",
+    "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+    "imageX": 0,
+    "imageY": 0,
+    "imageWidth": 28,
+    "imageHeight": 66,
+    "centerX": 14,
+    "centerY": 66
+  },
+  "83ebd92e-ce02-43ab-adfe-c19b5a46f3d6": {
+    "className": "org.ags.engine.Cell",
+    "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+    "imageX": 28,
+    "imageY": 0,
+    "imageWidth": 28,
+    "imageHeight": 66,
+    "centerX": 14,
+    "centerY": 66
+  }
+}

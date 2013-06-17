@@ -33,15 +33,15 @@ module org.ags.engine {
             context.drawImage(
                 this.image,
                 
-                // Output
-                x - this.centerX,
-                y - this.centerY,
-                iw,
-                ih,
-                
                 // Input
                 this.imageX,
                 this.imageY,
+                iw,
+                ih,
+                
+                // Output
+                x - this.centerX,
+                y - this.centerY,
                 iw,
                 ih);
         }

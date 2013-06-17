@@ -22,3 +22,11 @@ String.prototype.format = function() {
     
     return s;
 }
+
+String.prototype.startsWith = function (str) {
+    return this.indexOf(str) === 0;
+};
+
+String.prototype.endsWith = function (str) {
+    return this.slice(-str.length) === str;
+};

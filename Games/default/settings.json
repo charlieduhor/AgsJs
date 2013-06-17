@@ -1,12 +1,12 @@
 {
     "resolution": {
-        "height": 240,
-        "width": 320
+        "height": 480,
+        "width": 640
     },
     
     "loop": {
     	"interval": "NTSC"
     },
     
-    "startupScene": "TestRoom"
+    "startupScene": "arcada"
 }

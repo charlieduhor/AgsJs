@@ -55,6 +55,70 @@ module org.ags.engine {
         }
     };
 
+    class StageLoaderDelegate implements ILoaderDelegate {
+        private stage     : Stage;
+        private newSet    : Set;
+        private sceneName : string;
+        
+        constructor(stage : Stage, newSet : Set, sceneName : string) {
+            this.stage     = stage;
+            this.newSet    = newSet;
+            this.sceneName = sceneName;
+        }
+        
+        public loadJsonAsync(
+            url             : string, 
+            callbackSuccess : (data : any, url : string) => any,
+            callbackFail    : (error : ILoadError) => any) : XMLHttpRequest {
+            return this.stage.loadJsonAsync(url, callbackSuccess, callbackFail);        
+        }
+        
+        public progress(percent : number) {
+        }
+        
+        public finished() {
+            this.stage.finishedLoadingScene(this.newSet);
+        }
+        
+        public error(error : IError) : any {
+            Log.error("Failed to load scene {0}. {1}", this.sceneName, error.toString());
+        }
+        
+        public createObject(loader : Loader, className : string, objectInfo : any) : any {
+            if (className === "org.ags.engine.GameObject") {
+                return this.newSet.createGameObject(objectInfo["name"]);
+            }
+            
+            return undefined;
+        }
+        
+        public createImage(
+            url             : string,
+            callbackSuccess : (image : HTMLImageElement, url? : string) => any,
+            callbackFail    : (error : ILoadError) => any) : HTMLImageElement {
+            return this.stage.loadImage(url, callbackSuccess, callbackFail);                
+        }
+
+        public postProcess(loader : Loader, basePath : string, classObject : any, objectInfo : {}) : bool {
+            if (classObject instanceof GameObject) {
+                if (objectInfo["components"] !== undefined) {
+                    var trs : any[]  = objectInfo["components"];
+                    var index, count = trs.length;
+                    
+                    for (index = 0; index < count; index++) {
+                        var tr : {} = trs[index];
+                        
+                        classObject.addComponent(loader.loadProperty(basePath, tr));
+                    }
+                }
+                
+                return true;
+            }
+            
+            return false;
+        }
+    };
+
     export class Stage {
         public game          : string;
         public baseURL       : string;
@@ -65,6 +129,8 @@ module org.ags.engine {
         public gameSettings  : GameSettings;
 
         public currentSet    : Set;
+        
+        private intervalId   : any;
         
         constructor(parameters : StageParameters) {
             this.game     = parameters.game;
@@ -108,7 +174,11 @@ module org.ags.engine {
             callbackSuccess : (image : HTMLImageElement, url? : string) => any,
             callbackFail    : (error : ILoadError) => any) : HTMLImageElement {
             
-            var fullUrl      : string = this.url + url;
+            if (url.startsWith('/')) {
+                url = url.substring(1);
+            }
+            
+            var fullUrl : string = Path.join(this.url, url);
             
             if (callbackFail === undefined) {
                 throw new StageLoadError(-1, "You must specify an load failure handler.", url);
@@ -132,8 +202,13 @@ module org.ags.engine {
             callbackSuccess : (data : any, url : string) => any,
             callbackFail    : (error : ILoadError) => any,
             dataProcessor?  : (data : any) => any) : XMLHttpRequest {
+            
+            if (url.startsWith('/')) {
+                url = url.substring(1);
+            }
+                
             var xhr     : XMLHttpRequest = new XMLHttpRequest();
-            var fullUrl : string         = this.url + url;
+            var fullUrl : string         = Path.join(this.url, url);
             
             if (dataProcessor === undefined) {
                 dataProcessor = function(d) { return d; }
@@ -250,30 +325,17 @@ module org.ags.engine {
             }
             
             var that = this;
-            var newSet : Set = new Set(this, sceneName);
-            
-            this.loadJsonAsync(
-                "scenes/" + sceneName + ".json",
-                function(data : any) : any {
-                    newSet.load(
-                        data,
-                        function() {
-                            that.finishedLoadingScene(newSet);
-                        },
-                        function(error : IError) {
-                            Log.error("Failed to load scene {0}. {1}", sceneName, error.toString());
-                        });
-                },
-                function(error : ILoadError) {
-                    Log.error("Failed to load scene {0}. {1}", sceneName, error.toString());
-                });
+            var newSet : Set    = new Set(this, sceneName);
+            var loader : Loader = new Loader(new StageLoaderDelegate(that, newSet, sceneName));
+
+            loader.load("scenes/" + sceneName + "/scene.json");
         }
         
-        private finishedLoadingScene(newSet : Set) {
+        public finishedLoadingScene(newSet : Set) {
             var that = this;
             
             if (this.currentSet === undefined) {
-                setInterval(function () { that.currentSet.loop(); }, this.gameSettings.loop.interval);
+                this.intervalId = setInterval(function () { that.currentSet.loop(); }, this.gameSettings.loop.interval);
             }
             
             this.currentSet = newSet;
