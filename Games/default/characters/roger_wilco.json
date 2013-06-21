@@ -5,23 +5,183 @@
     "urlContentLength": 1017
   },
   "83ebd92e-ce02-43ab-adfe-c19b5a46f3d5": {
-    "className": "org.ags.engine.Cell",
-    "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
-    "imageX": 0,
-    "imageY": 0,
-    "imageWidth": 28,
-    "imageHeight": 66,
-    "centerX": 14,
-    "centerY": 66
-  },
-  "83ebd92e-ce02-43ab-adfe-c19b5a46f3d6": {
-    "className": "org.ags.engine.Cell",
-    "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
-    "imageX": 28,
-    "imageY": 0,
-    "imageWidth": 28,
-    "imageHeight": 66,
-    "centerX": 14,
-    "centerY": 66
+    "className": "org.ags.engine.components.Character",
+    "order": 15,
+    "direction": "right",
+    "speed": 3,
+    "loops": {
+      "right": {
+        "className": "org.ags.engine.CellLoop",
+        "cycle": true,
+        "cells": [
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 0,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 28,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 56,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 84,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 112,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 140,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 168,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 196,
+            "imageY": 0,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          }
+        ]
+      },
+      "left": {
+        "className": "org.ags.engine.CellLoop",
+        "cycle": true,
+        "cells": [
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 0,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 28,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 56,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 84,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 112,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 140,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 168,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          },
+          {
+            "className": "org.ags.engine.Cell",
+            "image": "#86e25a74-9621-479f-8960-3cbe3d4c7d60",
+            "imageX": 196,
+            "imageY": 66,
+            "imageWidth": 28,
+            "imageHeight": 66,
+            "centerX": 14,
+            "centerY": 66
+          }
+        ]
+      }
+    }
   }
 }

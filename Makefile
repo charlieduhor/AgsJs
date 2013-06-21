@@ -11,6 +11,7 @@ FILES = \
    scripts/org/ags/engine/GameObject.ts \
    scripts/org/ags/engine/Set.ts \
    scripts/org/ags/engine/Stage.ts \
+   scripts/org/ags/engine/components/Character.ts \
    scripts/org/ags/engine/components/Sprite.ts \
    scripts/org/ags/engine/components/StaticSprite.ts \
    scripts/org/ags/engine/components/Transform.ts \

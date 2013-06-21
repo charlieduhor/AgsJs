@@ -72,8 +72,16 @@ module org.ags.engine {
             m = component["update"];
             
             if (m !== undefined) {
-                if (m === "function") {
+                if (typeof m === "function") {
                     this.owner.updatableComponents.add(component);
+                }
+            }
+            
+            m = component["handleEvent"];
+            
+            if (m !== undefined) {
+                if (typeof m === "function") {
+                    this.owner.eventComponents.add(component);
                 }
             }
         }

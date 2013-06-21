@@ -156,6 +156,18 @@ module org.ags.engine {
                     return this.map[propValue.substring(1)];
                 }
             }
+            else if (propValue instanceof Array) {
+                var newArray    : any[]  = [];
+                var arrayLength : number = propValue.length;
+                var arrayIndex  : number;
+                
+                newArray.length = arrayLength;
+                for (arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
+                    newArray[arrayIndex] = this.loadProperty(basePath, propValue[arrayIndex]);
+                }
+                
+                return newArray;
+            }
             else if (propValue instanceof Object) {
                 var newObject;
                 
@@ -168,17 +180,6 @@ module org.ags.engine {
                 
                 this.loadObjectProperties(basePath, newObject, propValue);
                 return newObject;
-            }
-            else if (propValue instanceof Array) {
-                var newArray    : any[]  = [];
-                var arrayLength : number = propValue.length;
-                var arrayIndex  : number;
-                
-                for (arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
-                    newArray[arrayIndex] = this.loadProperty(basePath, propValue[arrayIndex]);
-                }
-                
-                return newArray;
             }
             
             return propValue;

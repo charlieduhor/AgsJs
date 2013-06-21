@@ -17,13 +17,25 @@ module org.ags.engine {
         startupScene     : string;
 	};
 	
+    export interface IUpdateFeedback {
+        drawNeeded   : bool;
+        orderChanged : bool;
+    };
+    
+    export interface IEvent {
+    };
+    
 	export interface IUpdatableComponent extends IOrderableComponent {
-		update();
+		update(feedback : IUpdateFeedback);
 	};
 	
 	export interface IDrawableComponent extends IOrderableComponent {
 		drawCanvas(context : CanvasRenderingContext2D);
 	};
+    
+    export interface IEventHandlingComponent extends IOrderableComponent {
+        handleEvent(feedback : IUpdateFeedback, event : IEvent);
+    };
 
     export class StageParameters {
         public game     : string = "default";

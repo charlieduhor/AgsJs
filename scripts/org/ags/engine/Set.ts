@@ -2,20 +2,22 @@
 "use strict";
 
 module org.ags.engine {
-    interface ISerializedGameObject {
-        className  : string;
-        name       : string;
-        components : any[];
-    }
+    export class UpdateFeedback implements IUpdateFeedback {
+        public drawNeeded   : bool = true;
+        public orderChanged : bool = true;
+    };
     
     export class Set {
         public updatableComponents : OrderedComponents = new OrderedComponents();
         public drawableComponents  : OrderedComponents = new OrderedComponents();
+        public eventComponents     : OrderedComponents = new OrderedComponents();
         
         public gameObjects : org.ags.engine.GameObject[] = [];
         
         public stage : Stage;
         public name  : string;
+        
+        private feedback : UpdateFeedback = new UpdateFeedback();
         
         constructor(stage : Stage, name : string) {
             this.stage = stage;
@@ -31,6 +33,7 @@ module org.ags.engine {
         }
 
         public loop() {
+            var feedback = this.feedback;
             var index : number, count : number;
             
             // Updates
@@ -38,16 +41,28 @@ module org.ags.engine {
             
             count = updates.length;
             for (index = 0; index < count; index++) {
-                updates[index].update();
+                updates[index].update(feedback);
             }
             
-            // Drawable
-            var drawables   : IDrawableComponent[]     = <IDrawableComponent[]>this.drawableComponents.components;
-            var drawContext : CanvasRenderingContext2D = this.stage.canvasContext;
+            if (feedback.orderChanged) {
+                feedback.orderChanged = false;
+                feedback.drawNeeded   = true;
+                
+                this.updatableComponents.reorder();
+                this.drawableComponents.reorder();
+            }
             
-            count = drawables.length;
-            for (index = 0; index < count; index++) {
-                drawables[index].drawCanvas(drawContext);
+            if (feedback.drawNeeded) {
+                feedback.drawNeeded = false;
+                
+                // Drawable
+                var drawables   : IDrawableComponent[]     = <IDrawableComponent[]>this.drawableComponents.components;
+                var drawContext : CanvasRenderingContext2D = this.stage.canvasContext;
+                
+                count = drawables.length;
+                for (index = 0; index < count; index++) {
+                    drawables[index].drawCanvas(drawContext);
+                }
             }
         }
     };

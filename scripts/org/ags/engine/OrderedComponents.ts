@@ -60,5 +60,11 @@ module org.ags.engine {
 			
 			return s;
 		}
+        
+        public reorder() {
+            this.components.sort(function(o1 : IOrderableComponent, o2 : IOrderableComponent) {
+                return o1.order - o2.order;
+            });
+        }
 	};
 };
