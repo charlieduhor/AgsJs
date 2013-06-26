@@ -7,7 +7,7 @@ module org.ags.engine.components {
         private loopRun   : IRunLoop;
         private cell      : ICell;
         private speedTime : number = 0;
-        public  speed     : number = 1;
+        public  speed     : number = 0;
         
         drawCanvas(context : CanvasRenderingContext2D) {
             var cell : ICell = this.cell;
@@ -49,7 +49,7 @@ module org.ags.engine.components {
             }
             
             if (this.loopRun) {
-                if (this.speedTime === 0) {
+                if (this.speedTime <= 1) {
                     this.cell      = this.loopRun.next();
                     this.speedTime = this.speed;
                 }

@@ -304,7 +304,7 @@ module org.ags.engine {
             
             if (typeof settings.loop.interval === "string") {
             	if (settings.loop.interval === "NTSC") {
-            		settings.loop.interval = 1001 / 30;
+            		settings.loop.interval = 1001.0 / 30.0;
             	}
             	else if (settings.loop.interval === "PAL") {
             		settings.loop.interval = 1001 / 25;
@@ -343,11 +343,52 @@ module org.ags.engine {
             loader.load("scenes/" + sceneName + "/scene.json");
         }
         
+        private performanceLastIntervalTime : number;
+        private performanceSample           : number = 0;
+        private performanceSampleCount      : number = 0;
+        private performanceBeginFrame       : number;
+        
+        private startLoop() {
+            var currentDate : Date = new Date();
+            
+            this.performanceBeginFrame = currentDate.getTime();
+        }
+        
+        private endLoop() {
+            var currentDate : Date   = new Date();
+            var currentTime : number = currentDate.getTime();
+            
+            if (this.performanceLastIntervalTime === undefined) {
+                this.performanceLastIntervalTime = currentTime;
+            }
+            else {
+                var delta = currentTime - this.performanceLastIntervalTime;
+                
+                this.performanceSample          += delta;
+                this.performanceSampleCount     += 1;
+                this.performanceLastIntervalTime = currentTime;
+                
+                if (this.performanceSampleCount >= 240) {
+                    console.log("Performance: Desired fps: " + 1000 / (this.gameSettings.loop.interval));
+                    console.log("Performance: Average fps: " + 1000 / (this.performanceSample / this.performanceSampleCount));
+                    console.log("Performance: Frame time:  " + (currentTime - this.performanceBeginFrame));
+                    
+                    this.performanceSample      = 0;
+                    this.performanceSampleCount = 0;
+                }
+            }
+        }
+        
         public finishedLoadingScene(newSet : Set) {
             var that = this;
             
             if (this.currentSet === undefined) {
-                this.intervalId = setInterval(function () { that.currentSet.loop(); }, this.gameSettings.loop.interval);
+                this.intervalId = setInterval(function () {
+                    that.startLoop();
+                    that.currentSet.loop();
+                    that.endLoop();
+                },
+                this.gameSettings.loop.interval);
             }
             
             this.currentSet = newSet;
