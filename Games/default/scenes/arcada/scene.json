@@ -1,6 +1,7 @@
 {
   "externals": [
-    "/characters/roger_wilco.json"
+    "/characters/roger_wilco.json",
+    "/sprites/spaceship/alarm.json"
   ],
   "7657c74d-0040-455b-af81-2ad3e76ce7c0": {
     "className": "org.ags.engine.GameObject",
@@ -15,72 +16,7 @@
         "className": "org.ags.engine.components.Sprite",
         "order": 5,
         "speed": 1,
-        "loop": {
-          "className": "org.ags.engine.CellLoop",
-          "cycle": true,
-          "cells": [
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 0,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            },
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 44,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            },
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 88,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            },
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 132,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            },
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 176,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            },
-            {
-              "className": "org.ags.engine.Cell",
-              "image": "#97d9f7d1-2af9-4862-8524-daeaab58c4a8",
-              "imageX": 220,
-              "imageY": 0,
-              "imageWidth": 44,
-              "imageHeight": 4,
-              "centerX": 0,
-              "centerY": 0
-            }
-          ]
-        }
+        "loop": "#78184d74-94ec-46d2-960e-060475453db8"
       }
     ]
   },
