@@ -1,11 +1,12 @@
 {
   "externals": [
     "/characters/roger_wilco.json",
-    "/sprites/spaceship/alarm.json"
+    "/sprites/spaceship/alarm.json",
+    "/sprites/spaceship/closet-door.json"
   ],
   "7657c74d-0040-455b-af81-2ad3e76ce7c0": {
     "className": "org.ags.engine.GameObject",
-    "name": "Alarm",
+    "name": "AlarmTop",
     "components": [
       {
         "className": "org.ags.engine.components.Transform",
@@ -20,10 +21,39 @@
       }
     ]
   },
-  "97d9f7d1-2af9-4862-8524-daeaab58c4a8": {
-    "className": "HTMLImageElement",
-    "url": "/sprites/spaceship/alarm.png",
-    "urlContentLength": 178
+  "101a6981-0693-456a-889f-bd28b51cd709": {
+    "className": "org.ags.engine.GameObject",
+    "name": "AlarmBottom",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 290,
+        "y": 178
+      },
+      {
+        "className": "org.ags.engine.components.Sprite",
+        "order": 5,
+        "speed": 1,
+        "loop": "#78184d74-94ec-46d2-960e-060475453db8"
+      }
+    ]
+  },
+  "74cc4285-7a23-4900-8ac0-4d61b3b917ac": {
+    "className": "org.ags.engine.GameObject",
+    "name": "ClosetDoor",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 372,
+        "y": 34
+      },
+      {
+        "className": "org.ags.engine.components.Sprite",
+        "order": 5,
+        "speed": 10,
+        "loop": "#42a4f6e3-f053-4cd8-b59f-3b3f2b5c6fc5"
+      }
+    ]
   },
   "abb336be-959f-40c0-9258-24ae27c44eaa": {
     "className": "org.ags.engine.GameObject",

@@ -1,0 +1,53 @@
+{
+  "39b0ed93-11e4-4d42-8f55-85ad567db5c6": {
+    "className": "HTMLImageElement",
+    "url": "/sprites/spaceship/closet-door.png",
+    "urlContentLength": 335
+  },
+  "42a4f6e3-f053-4cd8-b59f-3b3f2b5c6fc5": {
+    "className": "org.ags.engine.CellLoop",
+    "cycle": true,
+    "cells": [
+      {
+        "className": "org.ags.engine.Cell",
+        "image": "#39b0ed93-11e4-4d42-8f55-85ad567db5c6",
+        "imageX": 0,
+        "imageY": 0,
+        "imageWidth": 56,
+        "imageHeight": 80,
+        "centerX": 0,
+        "centerY": 0
+      },
+      {
+        "className": "org.ags.engine.Cell",
+        "image": "#39b0ed93-11e4-4d42-8f55-85ad567db5c6",
+        "imageX": 56,
+        "imageY": 0,
+        "imageWidth": 56,
+        "imageHeight": 80,
+        "centerX": 0,
+        "centerY": 0
+      },
+      {
+        "className": "org.ags.engine.Cell",
+        "image": "#39b0ed93-11e4-4d42-8f55-85ad567db5c6",
+        "imageX": 112,
+        "imageY": 0,
+        "imageWidth": 56,
+        "imageHeight": 80,
+        "centerX": 0,
+        "centerY": 0
+      },
+      {
+        "className": "org.ags.engine.Cell",
+        "image": "#39b0ed93-11e4-4d42-8f55-85ad567db5c6",
+        "imageX": 168,
+        "imageY": 0,
+        "imageWidth": 56,
+        "imageHeight": 80,
+        "centerX": 0,
+        "centerY": 0
+      }
+    ]
+  }
+}

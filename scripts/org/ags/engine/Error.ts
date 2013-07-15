@@ -25,5 +25,7 @@ module org.ags.engine {
         toString() : string {
             return "{0}: {1}".format(this.errorCode, this.errorString);
         }
+        
+        public static __HIDE_IN_EDITOR__ : bool = true;
     };
 }

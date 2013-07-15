@@ -2,7 +2,7 @@
 "use strict";
 
 module org.ags.engine {
-    export class UpdateFeedback implements IUpdateFeedback {
+    class UpdateFeedback implements IUpdateFeedback {
         public drawNeeded   : bool = true;
         public orderChanged : bool = true;
     };
@@ -17,7 +17,7 @@ module org.ags.engine {
         public stage : Stage;
         public name  : string;
         
-        private feedback : UpdateFeedback = new UpdateFeedback();
+        private feedback : IUpdateFeedback = new UpdateFeedback();
         
         constructor(stage : Stage, name : string) {
             this.stage = stage;
