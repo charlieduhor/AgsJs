@@ -8,6 +8,7 @@ module org.ags.engine.components {
         private cell      : ICell;
         private speedTime : number = 0;
         public  speed     : number = 0;
+        public  autostart : bool   = false;
         
         drawCanvas(context : CanvasRenderingContext2D) {
             var cell : ICell = this.cell;
@@ -40,11 +41,29 @@ module org.ags.engine.components {
             return [ org.ags.engine.components.Transform ];
         }
         
-        public update(feedback : IUpdateFeedback) {
+        public start() {
             if (this.loopRun === undefined) {
                 if (this.loop) {
                     this.loopRun   = this.loop.run();
                     this.speedTime = 0;
+                }
+            }
+        }
+        
+        public update(feedback : IUpdateFeedback) {
+            if (this.cell === undefined) {
+                if (this.autostart === true) {
+                    this.autostart = false;
+                    this.start();
+                }
+                else {
+                    if (this.loop !== undefined) {
+                        var lr : IRunLoop = this.loop.run();
+                        
+                        if (lr) {
+                            this.cell = lr.next();
+                        }
+                    }
                 }
             }
             

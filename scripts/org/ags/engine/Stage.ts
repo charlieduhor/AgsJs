@@ -340,7 +340,7 @@ module org.ags.engine {
             var newSet : Set    = new Set(this, sceneName);
             var loader : Loader = new Loader(new StageLoaderDelegate(that, newSet, sceneName));
 
-            loader.load("scenes/" + sceneName + "/scene.json");
+            loader.load("scenes/" + sceneName + "/" + sceneName + ".json");
         }
         
         private performanceLastIntervalTime : number;

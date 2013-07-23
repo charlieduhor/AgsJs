@@ -15,6 +15,7 @@
       },
       {
         "className": "org.ags.engine.components.Sprite",
+        "autostart": true,
         "order": 5,
         "speed": 1,
         "loop": "#78184d74-94ec-46d2-960e-060475453db8"
@@ -32,6 +33,7 @@
       },
       {
         "className": "org.ags.engine.components.Sprite",
+        "autostart": true,
         "order": 5,
         "speed": 1,
         "loop": "#78184d74-94ec-46d2-960e-060475453db8"

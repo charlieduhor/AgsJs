@@ -55,10 +55,10 @@ module org.ags.engine {
         
         public run() : IRunLoop {
             if (this.cycle) {
-                return new CellCycleRunLoop(this.cells, 0);
+                return new CellCycleRunLoop(this.cells, -1);
             }
             
-            return new CellRunLoop(this.cells, 0);
+            return new CellRunLoop(this.cells, -1);
         }
     }
 }
