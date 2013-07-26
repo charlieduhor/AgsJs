@@ -47,29 +47,33 @@ module org.ags.engine {
         
         public static join(u1 : string, u2 : string) : string {
             if (u2.startsWith("/")) {
-                return simplify(u2);
+                return Path.simplify(u2);
             }
             else if (u1.endsWith('/')) {
-                return simplify(u1 + u2);
+                return Path.simplify(u1 + u2);
             }
             else {
-                return simplify(u1 + "/" + u2);
+                return Path.simplify(u1 + "/" + u2);
             }
         }
     };
     
     export class Utilities {
         public static getBasePath() : string {
-            var parts = window.location.pathname.split("/");
+            var parts : string[] = window.location.pathname.split("/");
             
             parts[parts.length - 1] = undefined;
             parts.length--;
             
             return window.location.protocol + "//" + parts.join("/");
-        };
+        }
         
-        public static parseQueryString(queryString? : string, urlParams? = {}) : {} {
-            if (queryString == undefined) {
+        public static parseQueryString(queryString? : string, urlParams?) : {} {
+            if (urlParams === undefined) {
+                urlParams = {};
+            }            
+            
+            if (queryString === undefined) {
                 queryString = window.location.search;
             }
             
@@ -89,7 +93,7 @@ module org.ags.engine {
             }
             
             return urlParams;
-        };
+        }
         
         public static guid() : string {
             function s4() : string {

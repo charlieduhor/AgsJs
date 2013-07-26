@@ -1,10 +1,10 @@
 interface String {
     vformat(args: any[]): string;
     format(...args: any[]): string;
-    startsWith(s: string): bool;
-    endsWith(s: string): bool;
+    startsWith(s: string): boolean;
+    endsWith(s: string): boolean;
 }
-module org.ags.engine {
+declare module org.ags.engine {
     class Path {
         static dirname(url: string): string;
         static simplify(u1: string): string;
@@ -12,18 +12,18 @@ module org.ags.engine {
     }
     class Utilities {
         static getBasePath(): string;
-        static parseQueryString(queryString?: string, urlParams?: {}): {};
+        static parseQueryString(queryString?: string, urlParams?): {};
         static guid(): string;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     class Log {
         static info(s: string, ...args: any[]): void;
         static error(s: string, ...args: any[]): void;
         static warning(s: string, ...args: any[]): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface IError {
         errorString: string;
         errorCode: number;
@@ -37,17 +37,17 @@ module org.ags.engine {
         public errorString: string;
         constructor(errorCode: number, errorString: string);
         public toString(): string;
-        static __HIDE_IN_EDITOR__: bool;
+        static __HIDE_IN_EDITOR__: boolean;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     class EventHandler {
         public next: any;
         static add(eh: EventHandler, peh: EventHandler): EventHandler;
         static remove(eh: EventHandler, peh: EventHandler): EventHandler;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface IOrderableComponent {
         order: number;
     }
@@ -60,7 +60,7 @@ module org.ags.engine {
         public reorder(): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface ICell {
         drawCanvas(context: CanvasRenderingContext2D, x: number, y: number);
         hitTest(drawX: number, drawY: number, hitX: number, hitY: number): number;
@@ -79,16 +79,16 @@ module org.ags.engine {
         public deserialized(): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface ILoaderDelegate {
-        loadJsonAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: ILoadError) => any): XMLHttpRequest;
+        loadJsonAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: engine.ILoadError) => any): XMLHttpRequest;
         progress(percent: number);
         finished();
-        error(error: IError): any;
+        error(error: engine.IError): any;
         createObject(loader: Loader, className: string, objectInfo: {}): any;
-        createImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLImageElement;
-        createScript(url: string, callbackSuccess: (image: HTMLScriptElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLScriptElement;
-        postProcess(loader: Loader, basePath: string, classObject: any, objectInfo: {}): bool;
+        createImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLImageElement;
+        createScript(url: string, callbackSuccess: (image: HTMLScriptElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLScriptElement;
+        postProcess(loader: Loader, basePath: string, classObject: any, objectInfo: {}): boolean;
     }
     class Loader {
         private loadingResources;
@@ -105,84 +105,84 @@ module org.ags.engine {
         private loadObject(basePath, objectInfo, id, postProcess);
         private loadObjectProperties(basePath, o, values);
         public loadProperty(basePath: string, propValue: any): any;
-        static isReservedProperty(name: string): bool;
-        static isReservedObjectID(id: string): bool;
+        static isReservedProperty(name: string): boolean;
+        static isReservedObjectID(id: string): boolean;
         private createObjects(basePath, data);
         private createObjectProperties();
         public load(url: string): void;
         public loadScript(url: string): HTMLScriptElement;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface IRunLoop {
-        current(): ICell;
-        next(): ICell;
+        current(): engine.ICell;
+        next(): engine.ICell;
     }
     interface ILoop {
         run(): IRunLoop;
     }
     class CellLoop implements ILoop {
-        public cells: ICell[];
-        public cycle: bool;
+        public cells: engine.ICell[];
+        public cycle: boolean;
         public run(): IRunLoop;
     }
 }
-module org.ags.engine {
-    class Component implements IOrderableComponent {
-        public gameObject: GameObject;
+declare module org.ags.engine {
+    class Component implements engine.IOrderableComponent {
+        public gameObject: engine.GameObject;
         public order: number;
         constructor();
-        public setupGameObject(gameObject: GameObject): bool;
+        public setupGameObject(gameObject: engine.GameObject): boolean;
         public requiredComponents(): any[];
         public init(): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     class GameObject {
-        public owner: Set;
+        public owner: engine.Set;
         public name: string;
-        public components: Component[];
-        public transform: components.Transform;
-        constructor(owner: Set, name: string);
-        public stage : Stage;
-        public hasComponent(componentClass: any): bool;
-        public addComponentByClass(componentClass: any): Component;
+        public components: engine.Component[];
+        public transform: engine.components.Transform;
+        constructor(owner: engine.Set, name: string);
+        public stage : engine.Stage;
+        public hasComponent(componentClass: any): boolean;
+        public addComponentByClass(componentClass: any): engine.Component;
         public ensureHasComponents(requiredComponents: any[]): void;
-        public addComponent(component: Component): void;
+        public addComponent(component: engine.Component): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface IScene {
-        onAboutToEnterScene(newSet: Set, previousSet: Set);
-        onEnterScene(newSet: Set, previousSet: Set);
-        onAboutToExitScene(newSet: string, previousSet: Set);
-        onExitScene(newSet: Set, previousSet: Set);
+        onAboutToEnterScene(newSet: engine.Set, previousSet: engine.Set);
+        onEnterScene(newSet: engine.Set, previousSet: engine.Set);
+        onAboutToExitScene(newSet: string, previousSet: engine.Set);
+        onExitScene(newSet: engine.Set, previousSet: engine.Set);
         onEvent(event: Event);
     }
     class Scene {
-        public onAboutToEnterScene(newSet: Set, previousSet: Set): void;
-        public onEnterScene(newSet: Set, previousSet: Set): void;
-        public onAboutToExitScene(newSet: string, previousSet: Set): void;
-        public onExitScene(newSet: Set, previousSet: Set): void;
+        public onAboutToEnterScene(newSet: engine.Set, previousSet: engine.Set): void;
+        public onEnterScene(newSet: engine.Set, previousSet: engine.Set): void;
+        public onAboutToExitScene(newSet: string, previousSet: engine.Set): void;
+        public onExitScene(newSet: engine.Set, previousSet: engine.Set): void;
         public onEvent(event: Event): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     class Set {
-        public updatableComponents: OrderedComponents;
-        public drawableComponents: OrderedComponents;
-        public eventComponents: OrderedComponents;
-        public gameObjects: GameObject[];
-        public stage: Stage;
+        public updatableComponents: engine.OrderedComponents;
+        public drawableComponents: engine.OrderedComponents;
+        public eventComponents: engine.OrderedComponents;
+        public gameObjects: engine.GameObject[];
+        public stage: engine.Stage;
         public name: string;
-        public sceneScript: IScene;
+        public sceneScript: engine.IScene;
         private feedback;
-        constructor(stage: Stage, name: string);
-        public createGameObject(name: string): GameObject;
+        constructor(stage: engine.Stage, name: string);
+        public createGameObject(name: string): engine.GameObject;
         public loop(): void;
     }
 }
-module org.ags.engine {
+declare module org.ags.engine {
     interface GameResolutionSettings {
         width: number;
         height: number;
@@ -197,18 +197,18 @@ module org.ags.engine {
         sceneNamespace: string;
     }
     interface IUpdateFeedback {
-        drawNeeded: bool;
-        orderChanged: bool;
+        drawNeeded: boolean;
+        orderChanged: boolean;
     }
     interface IEvent {
     }
-    interface IUpdatableComponent extends IOrderableComponent {
+    interface IUpdatableComponent extends engine.IOrderableComponent {
         update(feedback: IUpdateFeedback);
     }
-    interface IDrawableComponent extends IOrderableComponent {
+    interface IDrawableComponent extends engine.IOrderableComponent {
         drawCanvas(context: CanvasRenderingContext2D);
     }
-    interface IEventHandlingComponent extends IOrderableComponent {
+    interface IEventHandlingComponent extends engine.IOrderableComponent {
         handleEvent(feedback: IUpdateFeedback, event: IEvent);
     }
     class StageParameters {
@@ -224,17 +224,17 @@ module org.ags.engine {
         public canvas: HTMLCanvasElement;
         public canvasContext: CanvasRenderingContext2D;
         public gameSettings: GameSettings;
-        public currentSet: Set;
+        public currentSet: engine.Set;
         private intervalId;
         constructor(parameters: StageParameters);
         private setup();
         private createCanvas();
-        public loadImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLImageElement;
-        public loadScript(url: string, callbackSuccess: (script: HTMLScriptElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLScriptElement;
-        public loadDataAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: ILoadError) => any, dataProcessor?: (data: any) => any): XMLHttpRequest;
+        public loadImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLImageElement;
+        public loadScript(url: string, callbackSuccess: (script: HTMLScriptElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLScriptElement;
+        public loadDataAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: engine.ILoadError) => any, dataProcessor?: (data: any) => any): XMLHttpRequest;
         public loadData(url: string, dataProcessor?: (data: any) => any): any;
         public loadJson(url: string): any;
-        public loadJsonAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: ILoadError) => any): XMLHttpRequest;
+        public loadJsonAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: engine.ILoadError) => any): XMLHttpRequest;
         public loadSettings(): void;
         private setSettings(settings);
         public start(): void;
@@ -245,48 +245,48 @@ module org.ags.engine {
         private performanceBeginFrame;
         private startLoop();
         private endLoop();
-        public finishedLoadingScene(newSet: Set): void;
-        public fatalError(message: string, errorInfo: IError): void;
+        public finishedLoadingScene(newSet: engine.Set): void;
+        public fatalError(message: string, errorInfo: engine.IError): void;
     }
 }
-module org.ags.engine.components {
-    class Character extends Sprite implements IDrawableComponent, IUpdatableComponent {
+declare module org.ags.engine.components {
+    class Character extends components.Sprite implements engine.IDrawableComponent, engine.IUpdatableComponent {
         private direction;
-        public loops: ILoop[];
+        public loops: engine.ILoop[];
         public getDirection(): string;
-        public setDirection(feedback: IUpdateFeedback, direction: string): void;
-        public update(feedback: IUpdateFeedback): void;
+        public setDirection(feedback: engine.IUpdateFeedback, direction: string): void;
+        public update(feedback: engine.IUpdateFeedback): void;
         public deserialized(): void;
     }
 }
-module org.ags.engine.components {
-    class Sprite extends Component implements IDrawableComponent {
+declare module org.ags.engine.components {
+    class Sprite extends engine.Component implements engine.IDrawableComponent {
         private loop;
         private loopRun;
         private cell;
         private speedTime;
         public speed: number;
-        public autostart: bool;
+        public autostart: boolean;
         public drawCanvas(context: CanvasRenderingContext2D): void;
-        public getLoop(): ILoop;
-        public setLoop(feedback: IUpdateFeedback, newLoop: ILoop): void;
+        public getLoop(): engine.ILoop;
+        public setLoop(feedback: engine.IUpdateFeedback, newLoop: engine.ILoop): void;
         public requiredComponents(): any[];
         public start(): void;
-        public update(feedback: IUpdateFeedback): void;
+        public update(feedback: engine.IUpdateFeedback): void;
     }
 }
-module org.ags.engine.components {
-    class StaticSprite extends Component implements IDrawableComponent {
-        public cell: Cell;
+declare module org.ags.engine.components {
+    class StaticSprite extends engine.Component implements engine.IDrawableComponent {
+        public cell: engine.Cell;
         public drawCanvas(context: CanvasRenderingContext2D): void;
         public requiredComponents(): any[];
     }
 }
-module org.ags.engine.components {
-    class Transform extends Component {
+declare module org.ags.engine.components {
+    class Transform extends engine.Component {
         public x: number;
         public y: number;
-        public setupGameObject(gameObject: GameObject): bool;
+        public setupGameObject(gameObject: engine.GameObject): boolean;
     }
 }
-function EngineMain(): org.ags.engine.Stage;
+declare function EngineMain(): org.ags.engine.Stage;

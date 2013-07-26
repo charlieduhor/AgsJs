@@ -1,9 +1,11 @@
 #!/usr/bin/make
 TSC = tsc
 
-.PHONY: engine editor sq1ega
+.PHONY: engine engine_clean editor editor_clean sq1ega sq1ega_clean all clean
 
 all: engine editor sq1ega
+
+clean: engine_clean editor_clean sq1ega_clean
 
 ##
 # Engine Files
@@ -41,6 +43,10 @@ ags.engine.d.ts ags.engine.js: $(ENGINE_TS_FILES)
 
 engine: $(ENGINE_JS_FILES) ags.engine.d.ts
 
+engine_clean:
+	rm -f $(ENGINE_JS_FILES)
+	rm -f ags.engine.d.ts
+
 ##
 # Editor Files
 ##
@@ -51,11 +57,14 @@ EDITOR_TS_FILES = \
 
 EDITOR_JS_FILES = $(EDITOR_TS_FILES:.ts=.js)
 
-EDITOR_JS_FILES: ags.engine.d.ts $(EDITOR_TS_FILES)
+$(EDITOR_JS_FILES): ags.engine.d.ts $(EDITOR_TS_FILES)
 	@echo Building Editor...
 	@$(TSC) --target ES5 ags.engine.d.ts $(EDITOR_TS_FILES)
 
-editor: $(EDITOR_TS_FILES)
+editor: $(EDITOR_JS_FILES)
+
+editor_clean:
+	rm -f $(EDITOR_JS_FILES)
 
 ##
 # SQ1 EGA
@@ -72,3 +81,5 @@ $(SQ1EGA_JS_FILES): ags.engine.d.ts $(SQ1EGA_TS_FILES)
 
 sq1ega: $(SQ1EGA_JS_FILES)
 
+sq1ega_clean:
+	rm -f $(SQ1EGA_JS_FILES)

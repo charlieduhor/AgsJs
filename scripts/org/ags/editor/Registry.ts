@@ -4,11 +4,11 @@ module org.ags.editor {
         public static engineClasses : string[] = [];
 
         public static addEngineClass(className : string) {
-            engineClasses.push(className);
+            Registry.engineClasses.push(className);
         }
 
         public static getEngineClasses() : string[] {
-            return engineClasses;
+            return Registry.engineClasses;
         }
     }
 }
