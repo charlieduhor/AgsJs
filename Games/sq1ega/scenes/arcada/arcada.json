@@ -132,5 +132,17 @@
         }
       }
     ]
+  },
+  "80dc1354-2931-4b1b-a01f-683e8dfcd378": {
+    "className": "org.ags.engine.GameObject",
+    "name": "Ego",
+    "components": [
+      {
+        "className": "org.ags.engine.components.Transform",
+        "x": 88,
+        "y": 90
+      },
+      "#83ebd92e-ce02-43ab-adfe-c19b5a46f3d5"
+    ]
   }
 }

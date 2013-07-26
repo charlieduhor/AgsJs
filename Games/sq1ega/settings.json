@@ -8,5 +8,6 @@
     	"interval": 55
     },
     
-    "startupScene": "arcada"
+    "startupScene": "arcada",
+    "sceneNamespace": "sq1ega"
 }

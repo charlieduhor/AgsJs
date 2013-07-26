@@ -87,6 +87,7 @@ module org.ags.engine {
         error(error: IError): any;
         createObject(loader: Loader, className: string, objectInfo: {}): any;
         createImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLImageElement;
+        createScript(url: string, callbackSuccess: (image: HTMLScriptElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLScriptElement;
         postProcess(loader: Loader, basePath: string, classObject: any, objectInfo: {}): bool;
     }
     class Loader {
@@ -109,6 +110,7 @@ module org.ags.engine {
         private createObjects(basePath, data);
         private createObjectProperties();
         public load(url: string): void;
+        public loadScript(url: string): HTMLScriptElement;
     }
 }
 module org.ags.engine {
@@ -150,6 +152,22 @@ module org.ags.engine {
     }
 }
 module org.ags.engine {
+    interface IScene {
+        onAboutToEnterScene(newSet: Set, previousSet: Set);
+        onEnterScene(newSet: Set, previousSet: Set);
+        onAboutToExitScene(newSet: string, previousSet: Set);
+        onExitScene(newSet: Set, previousSet: Set);
+        onEvent(event: Event);
+    }
+    class Scene {
+        public onAboutToEnterScene(newSet: Set, previousSet: Set): void;
+        public onEnterScene(newSet: Set, previousSet: Set): void;
+        public onAboutToExitScene(newSet: string, previousSet: Set): void;
+        public onExitScene(newSet: Set, previousSet: Set): void;
+        public onEvent(event: Event): void;
+    }
+}
+module org.ags.engine {
     class Set {
         public updatableComponents: OrderedComponents;
         public drawableComponents: OrderedComponents;
@@ -157,6 +175,7 @@ module org.ags.engine {
         public gameObjects: GameObject[];
         public stage: Stage;
         public name: string;
+        public sceneScript: IScene;
         private feedback;
         constructor(stage: Stage, name: string);
         public createGameObject(name: string): GameObject;
@@ -175,6 +194,7 @@ module org.ags.engine {
         resolution: GameResolutionSettings;
         loop: GameLoopSettings;
         startupScene: string;
+        sceneNamespace: string;
     }
     interface IUpdateFeedback {
         drawNeeded: bool;
@@ -210,6 +230,7 @@ module org.ags.engine {
         private setup();
         private createCanvas();
         public loadImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLImageElement;
+        public loadScript(url: string, callbackSuccess: (script: HTMLScriptElement, url?: string) => any, callbackFail: (error: ILoadError) => any): HTMLScriptElement;
         public loadDataAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: ILoadError) => any, dataProcessor?: (data: any) => any): XMLHttpRequest;
         public loadData(url: string, dataProcessor?: (data: any) => any): any;
         public loadJson(url: string): any;

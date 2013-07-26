@@ -20,6 +20,7 @@ ENGINE_TS_FILES = \
    scripts/org/ags/engine/Loop.ts \
    scripts/org/ags/engine/Component.ts \
    scripts/org/ags/engine/GameObject.ts \
+   scripts/org/ags/engine/Scene.ts \
    scripts/org/ags/engine/Set.ts \
    scripts/org/ags/engine/Stage.ts \
    scripts/org/ags/engine/components/Character.ts \
@@ -38,7 +39,7 @@ ags.engine.d.ts ags.engine.js: $(ENGINE_TS_FILES)
 	@echo Building Engine declaration file...
 	@$(TSC) --target ES5 $(ENGINE_TS_FILES) --out ags.engine.js --declaration
 
-engine: $(ENGINE_TS_FILES) ags.engine.d.ts
+engine: $(ENGINE_JS_FILES) ags.engine.d.ts
 
 ##
 # Editor Files

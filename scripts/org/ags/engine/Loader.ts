@@ -27,6 +27,12 @@ module org.ags.engine {
             callbackSuccess : (image : HTMLImageElement, url? : string) => any,
             callbackFail    : (error : ILoadError) => any) : HTMLImageElement;
             
+        // Loading an script.
+        createScript(
+            url             : string,
+            callbackSuccess : (image : HTMLScriptElement, url? : string) => any,
+            callbackFail    : (error : ILoadError) => any) : HTMLScriptElement;
+            
         // Give a chance to the caller of the loader object to hook the object
         // post-processing procedures.
         postProcess(loader : Loader, basePath : string, classObject : any, objectInfo : {}) : bool;
@@ -260,6 +266,28 @@ module org.ags.engine {
             catch (e) {
                 this.resourceLoadFailed(0, e);
             }
+        }
+        
+        public loadScript(url : string) : HTMLScriptElement {
+            var that     = this;
+            var basePath = Path.dirname(url);
+            
+            this.loadingResources++;
+            
+            try {
+                return this.delegate.createScript(url,
+                    function (data : HTMLScriptElement) {
+                        that.resourceLoadSuccess(0);
+                    },
+                    function (error : ILoadError) {
+                        that.resourceLoadFailed(0, error);
+                    });
+            }
+            catch (e) {
+                this.resourceLoadFailed(0, e);
+            }
+            
+            return undefined;
         }
     };
 }

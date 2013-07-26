@@ -14,8 +14,9 @@ module org.ags.engine {
         
         public gameObjects : org.ags.engine.GameObject[] = [];
         
-        public stage : Stage;
-        public name  : string;
+        public stage       : Stage;
+        public name        : string;
+        public sceneScript : IScene;
         
         private feedback : IUpdateFeedback = new UpdateFeedback();
         

@@ -15,6 +15,7 @@ module org.ags.engine {
 		resolution       : GameResolutionSettings;
 		loop             : GameLoopSettings;
         startupScene     : string;
+        sceneNamespace   : string;
 	};
 	
     export interface IUpdateFeedback {
@@ -89,6 +90,18 @@ module org.ags.engine {
         }
         
         public finished() {
+            var cons;
+            
+            try {
+                cons = eval(this.stage.gameSettings.sceneNamespace + "." + this.sceneName);
+            }
+            catch (e) {
+            }
+            
+            if (cons) {
+                this.newSet.sceneScript = new cons();
+            }
+            
             this.stage.finishedLoadingScene(this.newSet);
         }
         
@@ -109,6 +122,13 @@ module org.ags.engine {
             callbackSuccess : (image : HTMLImageElement, url? : string) => any,
             callbackFail    : (error : ILoadError) => any) : HTMLImageElement {
             return this.stage.loadImage(url, callbackSuccess, callbackFail);                
+        }
+        
+        public createScript(
+            url             : string,
+            callbackSuccess : (image : HTMLScriptElement, url? : string) => any,
+            callbackFail    : (error : ILoadError) => any) : HTMLScriptElement {
+            return this.stage.loadScript(url, callbackSuccess, callbackFail);                
         }
 
         public postProcess(loader : Loader, basePath : string, classObject : any, objectInfo : {}) : bool {
@@ -208,7 +228,38 @@ module org.ags.engine {
             img.src     = fullUrl;
             return img;
         }
-        
+
+        public loadScript(
+            url             : string,
+            callbackSuccess : (script : HTMLScriptElement, url? : string) => any,
+            callbackFail    : (error : ILoadError) => any) : HTMLScriptElement {
+            
+            if (url.startsWith('/')) {
+                url = url.substring(1);
+            }
+            
+            var fullUrl : string = Path.join(this.url, url);
+            
+            if (callbackFail === undefined) {
+                throw new StageLoadError(-1, "You must specify an load failure handler.", url);
+            }
+            
+            var errorWrapper = function() {
+                callbackFail(new StageLoadError(-1, "Failed to load script", url));
+            };
+            
+            var script : HTMLScriptElement = <HTMLScriptElement>document.createElement("script");
+            
+            script.onload  = function() { callbackSuccess(script, url); };
+            script.onerror = errorWrapper;
+            script.onabort = errorWrapper;
+            script.src     = fullUrl;
+            script.type    = "text/javascript";
+            
+            document.getElementsByTagName("head")[0].appendChild(script);
+            return script;
+        }
+
         public loadDataAsync(
             url : string, 
             callbackSuccess : (data : any, url : string) => any,
@@ -341,6 +392,23 @@ module org.ags.engine {
             var loader : Loader = new Loader(new StageLoaderDelegate(that, newSet, sceneName));
 
             loader.load("scenes/" + sceneName + "/" + sceneName + ".json");
+            
+            var ns : {};
+            
+            try {
+                ns = eval(this.gameSettings.sceneNamespace);
+            }
+            catch (e) {
+            }
+            
+            if (ns !== undefined) {
+                if (ns[sceneName]) {
+                    // Scene's script is already loaded.
+                    return;
+                }
+            }
+            
+            loader.loadScript("scenes/" + sceneName + "/" + sceneName + ".js")
         }
         
         private performanceLastIntervalTime : number;
@@ -381,7 +449,17 @@ module org.ags.engine {
         
         public finishedLoadingScene(newSet : Set) {
             var that = this;
-            
+
+            if (this.currentSet) {
+                if (this.currentSet.sceneScript) {
+                    this.currentSet.sceneScript.onExitScene(newSet, this.currentSet);
+                }
+            }
+
+            if (newSet.sceneScript) {
+                newSet.sceneScript.onAboutToEnterScene(newSet, this.currentSet);
+            }
+
             if (this.currentSet === undefined) {
                 this.intervalId = setInterval(function () {
                     that.startLoop();
@@ -391,7 +469,13 @@ module org.ags.engine {
                 this.gameSettings.loop.interval);
             }
             
+            var oldSet = this.currentSet;
+            
             this.currentSet = newSet;
+            
+            if (newSet.sceneScript) {
+                newSet.sceneScript.onEnterScene(newSet, oldSet);
+            }
         }
         
         public fatalError(message : string, errorInfo : IError) {
