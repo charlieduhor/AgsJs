@@ -8,9 +8,9 @@ module org.ags.engine {
     };
     
     export class Set {
-        public updatableComponents : OrderedComponents = new OrderedComponents();
-        public drawableComponents  : OrderedComponents = new OrderedComponents();
-        public eventComponents     : OrderedComponents = new OrderedComponents();
+        public updatableComponents : OrderedComponents<IUpdatableComponent> = new OrderedComponents<IUpdatableComponent>();
+        public drawableComponents  : OrderedComponents<IDrawableComponent>  = new OrderedComponents<IDrawableComponent>();
+        public eventComponents     : OrderedComponents<IEventComponent>     = new OrderedComponents<IEventComponent>();
         
         public gameObjects : org.ags.engine.GameObject[] = [];
         
@@ -33,12 +33,21 @@ module org.ags.engine {
             return go;
         }
 
+        private performReorder() {
+            this.feedback.orderChanged = false;
+            this.feedback.drawNeeded   = true;
+            
+            this.updatableComponents.reorder();
+            this.drawableComponents.reorder();
+            this.eventComponents.reorder();
+        }
+
         public loop() {
-            var feedback = this.feedback;
-            var index : number, count : number;
+            var feedback : IUpdateFeedback = this.feedback;
+            var index    : number, count : number;
             
             // Updates
-            var updates : IUpdatableComponent[] = <IUpdatableComponent[]>this.updatableComponents.components;
+            var updates : IUpdatableComponent[] = this.updatableComponents.components;
             
             count = updates.length;
             for (index = 0; index < count; index++) {
@@ -46,24 +55,37 @@ module org.ags.engine {
             }
             
             if (feedback.orderChanged) {
-                feedback.orderChanged = false;
-                feedback.drawNeeded   = true;
-                
-                this.updatableComponents.reorder();
-                this.drawableComponents.reorder();
+                this.performReorder();
             }
             
             if (feedback.drawNeeded) {
                 feedback.drawNeeded = false;
                 
                 // Drawable
-                var drawables   : IDrawableComponent[]     = <IDrawableComponent[]>this.drawableComponents.components;
+                var drawables   : IDrawableComponent[]     = this.drawableComponents.components;
                 var drawContext : CanvasRenderingContext2D = this.stage.canvasContext;
                 
                 count = drawables.length;
                 for (index = 0; index < count; index++) {
                     drawables[index].drawCanvas(drawContext);
                 }
+            }
+        }
+        
+        public dispatchEvent(ev : Event) {
+            var index    : number, count : number;
+            var ec       : OrderedComponents<IEventComponent> = this.eventComponents;
+            var feedback : IUpdateFeedback                    = this.feedback;
+            
+            count = ec.components.length;
+            for (index = 0; index < count; index++) {
+                if (ec.components[index].handleEvent(feedback, ev)) {
+                    break;
+                }
+            }
+            
+            if (feedback.orderChanged) {
+                this.performReorder();
             }
         }
     };

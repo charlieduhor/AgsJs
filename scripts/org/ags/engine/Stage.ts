@@ -22,20 +22,17 @@ module org.ags.engine {
         drawNeeded   : bool;
         orderChanged : bool;
     };
-    
-    export interface IEvent {
-    };
-    
-	export interface IUpdatableComponent extends IOrderableComponent {
+        
+	export interface IUpdatableComponent extends IOrderable {
 		update(feedback : IUpdateFeedback);
 	};
 	
-	export interface IDrawableComponent extends IOrderableComponent {
+	export interface IDrawableComponent extends IOrderable {
 		drawCanvas(context : CanvasRenderingContext2D);
 	};
     
-    export interface IEventHandlingComponent extends IOrderableComponent {
-        handleEvent(feedback : IUpdateFeedback, event : IEvent);
+    export interface IEventComponent extends IOrderable {
+        handleEvent(feedback : IUpdateFeedback, event : Event) : bool;
     };
 
     export class StageParameters {
@@ -447,6 +444,17 @@ module org.ags.engine {
             }
         }
         
+        public hookEvents() {
+            var that = this;
+            
+            var eventHandler = function() {
+                that.currentSet.dispatchEvent(window.event);
+            };
+            
+            document.body.onkeydown = eventHandler;
+            document.body.onkeyup   = eventHandler;
+        }
+        
         public finishedLoadingScene(newSet : Set) {
             var that = this;
 
@@ -461,6 +469,7 @@ module org.ags.engine {
             }
 
             if (this.currentSet === undefined) {
+                this.hookEvents();
                 this.intervalId = setInterval(function () {
                     that.startLoop();
                     that.currentSet.loop();

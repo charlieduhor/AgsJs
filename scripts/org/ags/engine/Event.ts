@@ -2,6 +2,13 @@
 "use strict";
 
 module org.ags.engine {
+    export enum KeyEvent {
+        DOM_VK_LEFT  = 0x25,
+        DOM_VK_UP    = 0x26,
+        DOM_VK_RIGHT = 0x27,
+        DOM_VK_DOWN  = 0x28
+    }
+    
     export class EventHandler {
         public next : any;
         

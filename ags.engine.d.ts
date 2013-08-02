@@ -41,6 +41,12 @@ declare module org.ags.engine {
     }
 }
 declare module org.ags.engine {
+    enum KeyEvent {
+        DOM_VK_LEFT,
+        DOM_VK_UP,
+        DOM_VK_RIGHT,
+        DOM_VK_DOWN,
+    }
     class EventHandler {
         public next: any;
         static add(eh: EventHandler, peh: EventHandler): EventHandler;
@@ -48,13 +54,13 @@ declare module org.ags.engine {
     }
 }
 declare module org.ags.engine {
-    interface IOrderableComponent {
+    interface IOrderable {
         order: number;
     }
-    class OrderedComponents {
-        public components: IOrderableComponent[];
+    class OrderedComponents<T extends org.ags.engine.IOrderable> {
+        public components: T[];
         constructor();
-        public add(component: IOrderableComponent): number;
+        public add(component: T): number;
         private _add(component, b1, b2);
         public debugOrders(): string;
         public reorder(): void;
@@ -128,7 +134,7 @@ declare module org.ags.engine {
     }
 }
 declare module org.ags.engine {
-    class Component implements engine.IOrderableComponent {
+    class Component implements engine.IOrderable {
         public gameObject: engine.GameObject;
         public order: number;
         constructor();
@@ -169,9 +175,9 @@ declare module org.ags.engine {
 }
 declare module org.ags.engine {
     class Set {
-        public updatableComponents: engine.OrderedComponents;
-        public drawableComponents: engine.OrderedComponents;
-        public eventComponents: engine.OrderedComponents;
+        public updatableComponents: engine.OrderedComponents<engine.IUpdatableComponent>;
+        public drawableComponents: engine.OrderedComponents<engine.IDrawableComponent>;
+        public eventComponents: engine.OrderedComponents<engine.IEventComponent>;
         public gameObjects: engine.GameObject[];
         public stage: engine.Stage;
         public name: string;
@@ -179,7 +185,9 @@ declare module org.ags.engine {
         private feedback;
         constructor(stage: engine.Stage, name: string);
         public createGameObject(name: string): engine.GameObject;
+        private performReorder();
         public loop(): void;
+        public dispatchEvent(ev: Event): void;
     }
 }
 declare module org.ags.engine {
@@ -200,16 +208,14 @@ declare module org.ags.engine {
         drawNeeded: boolean;
         orderChanged: boolean;
     }
-    interface IEvent {
-    }
-    interface IUpdatableComponent extends engine.IOrderableComponent {
+    interface IUpdatableComponent extends engine.IOrderable {
         update(feedback: IUpdateFeedback);
     }
-    interface IDrawableComponent extends engine.IOrderableComponent {
+    interface IDrawableComponent extends engine.IOrderable {
         drawCanvas(context: CanvasRenderingContext2D);
     }
-    interface IEventHandlingComponent extends engine.IOrderableComponent {
-        handleEvent(feedback: IUpdateFeedback, event: IEvent);
+    interface IEventComponent extends engine.IOrderable {
+        handleEvent(feedback: IUpdateFeedback, event: Event): boolean;
     }
     class StageParameters {
         public game: string;
@@ -245,18 +251,20 @@ declare module org.ags.engine {
         private performanceBeginFrame;
         private startLoop();
         private endLoop();
+        public hookEvents(): void;
         public finishedLoadingScene(newSet: engine.Set): void;
         public fatalError(message: string, errorInfo: engine.IError): void;
     }
 }
 declare module org.ags.engine.components {
-    class Character extends components.Sprite implements engine.IDrawableComponent, engine.IUpdatableComponent {
+    class Character extends components.Sprite implements engine.IDrawableComponent, engine.IUpdatableComponent, engine.IEventComponent {
         private direction;
         public loops: engine.ILoop[];
         public getDirection(): string;
         public setDirection(feedback: engine.IUpdateFeedback, direction: string): void;
         public update(feedback: engine.IUpdateFeedback): void;
         public deserialized(): void;
+        public handleEvent(feedback: engine.IUpdateFeedback, event: Event): boolean;
     }
 }
 declare module org.ags.engine.components {
@@ -266,12 +274,11 @@ declare module org.ags.engine.components {
         private cell;
         private speedTime;
         public speed: number;
-        public autostart: boolean;
+        public running: boolean;
         public drawCanvas(context: CanvasRenderingContext2D): void;
         public getLoop(): engine.ILoop;
         public setLoop(feedback: engine.IUpdateFeedback, newLoop: engine.ILoop): void;
         public requiredComponents(): any[];
-        public start(): void;
         public update(feedback: engine.IUpdateFeedback): void;
     }
 }

@@ -2,7 +2,7 @@
 "use strict";
 
 module org.ags.engine {
-    export class Component implements IOrderableComponent {
+    export class Component implements IOrderable {
         public gameObject : GameObject;
 		public order      : number;
         

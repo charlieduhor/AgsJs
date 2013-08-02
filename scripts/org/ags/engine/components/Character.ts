@@ -2,7 +2,14 @@
 "use strict";
 
 module org.ags.engine.components {
-    export class Character extends Sprite implements IDrawableComponent, IUpdatableComponent {
+    enum DirectionMap {
+        right = <number>KeyEvent.DOM_VK_RIGHT,
+        left  = <number>KeyEvent.DOM_VK_LEFT,
+        up    = <number>KeyEvent.DOM_VK_UP,
+        down  = <number>KeyEvent.DOM_VK_DOWN
+    }
+    
+    export class Character extends Sprite implements IDrawableComponent, IUpdatableComponent, IEventComponent {
         private direction : string;
         public  loops     : ILoop[];
 
@@ -27,6 +34,18 @@ module org.ags.engine.components {
             if (this.direction !== undefined) {
                 this.setLoop(undefined, this.loops[this.direction]);
             }
+        }
+        
+        public handleEvent(feedback : IUpdateFeedback, event : Event) : bool {
+            if (event.type === "keydown") {
+                var direction = DirectionMap[(<KeyboardEvent>event).keyCode];
+                
+                if (direction !== undefined) {
+                    this.setDirection(feedback, direction);
+                }
+            }
+            
+            return false;
         }
     }
 }

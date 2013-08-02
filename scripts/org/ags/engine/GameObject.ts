@@ -65,7 +65,7 @@ module org.ags.engine {
             
             if (m !== undefined) {
                 if (typeof m === "function") {
-                    this.owner.drawableComponents.add(component);
+                    this.owner.drawableComponents.add(<IDrawableComponent><any>component);
                 }
             }
             
@@ -73,7 +73,7 @@ module org.ags.engine {
             
             if (m !== undefined) {
                 if (typeof m === "function") {
-                    this.owner.updatableComponents.add(component);
+                    this.owner.updatableComponents.add(<IUpdatableComponent><any>component);
                 }
             }
             
@@ -81,7 +81,7 @@ module org.ags.engine {
             
             if (m !== undefined) {
                 if (typeof m === "function") {
-                    this.owner.eventComponents.add(component);
+                    this.owner.eventComponents.add(<IEventComponent><any>component);
                 }
             }
         }

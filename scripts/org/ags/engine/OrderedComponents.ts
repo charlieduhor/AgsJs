@@ -1,17 +1,17 @@
 
 module org.ags.engine {
-	export interface IOrderableComponent {
+	export interface IOrderable {
 		order : number;
 	};
 	
-	export class OrderedComponents {
-		public components : IOrderableComponent[];
+	export class OrderedComponents<T extends IOrderable> {
+		public components : T[];
 	
 		constructor() {
 			this.components = [];
 		}
 	
-		public add(component : IOrderableComponent) : number {
+		public add(component : T) : number {
 			if (this.components.length == 0) {
 				this.components[0] = component;
 				return 0;
@@ -20,7 +20,7 @@ module org.ags.engine {
 			return this._add(component, 0, this.components.length - 1);
 		}
 		
-		private _add(component : IOrderableComponent, b1 : number, b2 : number) : number {
+		private _add(component : T, b1 : number, b2 : number) : number {
 			var i : number = Math.floor(b1 + ((b2 - b1) / 2));
 			
 			if (this.components[i].order <= component.order) {
@@ -62,7 +62,7 @@ module org.ags.engine {
 		}
         
         public reorder() {
-            this.components.sort(function(o1 : IOrderableComponent, o2 : IOrderableComponent) {
+            this.components.sort(function(o1 : IOrderable, o2 : IOrderable) {
                 return o1.order - o2.order;
             });
         }

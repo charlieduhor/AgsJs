@@ -8,7 +8,7 @@ module org.ags.engine.components {
         private cell      : ICell;
         private speedTime : number = 0;
         public  speed     : number = 0;
-        public  autostart : bool   = false;
+        public  running   : bool   = false;
         
         drawCanvas(context : CanvasRenderingContext2D) {
             var cell : ICell = this.cell;
@@ -30,6 +30,7 @@ module org.ags.engine.components {
             }
             
             this.loop    = newLoop;
+            this.cell    = undefined;
             this.loopRun = undefined;
             
             if (feedback) {
@@ -41,33 +42,19 @@ module org.ags.engine.components {
             return [ org.ags.engine.components.Transform ];
         }
         
-        public start() {
-            if (this.loopRun === undefined) {
-                if (this.loop) {
-                    this.loopRun   = this.loop.run();
-                    this.speedTime = 0;
-                }
-            }
-        }
-        
         public update(feedback : IUpdateFeedback) {
-            if (this.cell === undefined) {
-                if (this.autostart === true) {
-                    this.autostart = false;
-                    this.start();
-                }
-                else {
-                    if (this.loop !== undefined) {
-                        var lr : IRunLoop = this.loop.run();
-                        
-                        if (lr) {
-                            this.cell = lr.next();
-                        }
-                    }
+            if (this.loopRun === undefined && this.loop) {
+                this.loopRun   = this.loop.run();
+                this.speedTime = 0;
+            }
+            
+            if (this.cell === undefined && !this.running) {
+                if (this.loopRun) {
+                    this.cell = this.loopRun.next();
                 }
             }
             
-            if (this.loopRun) {
+            if (this.loopRun && this.running) {
                 if (this.speedTime <= 1) {
                     this.cell      = this.loopRun.next();
                     this.speedTime = this.speed;
