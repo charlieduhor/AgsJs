@@ -1,11 +1,11 @@
 #!/usr/bin/make
 TSC = tsc
 
-.PHONY: engine engine_clean editor editor_clean sq1ega sq1ega_clean all clean
+.PHONY: engine engine_clean editor editor_clean server server_clean sq1ega sq1ega_clean all clean
 
-all: engine editor sq1ega
+all: engine editor server sq1ega
 
-clean: engine_clean editor_clean sq1ega_clean
+clean: engine_clean editor_clean server_clean sq1ega_clean
 
 ##
 # Engine Files
@@ -65,6 +65,33 @@ editor: $(EDITOR_JS_FILES)
 
 editor_clean:
 	rm -f $(EDITOR_JS_FILES)
+
+##
+# Server
+##
+
+SERVER_TS_FILES = \
+   server.ts
+
+SERVER_JS_FILES = $(SERVER_TS_FILES:.ts=.js)
+
+NODE_TS_FILES = \
+    node.d.ts \
+    node_buffer.d.ts \
+    node_fs.d.ts \
+	node_http.d.ts \
+    node_path.d.ts \
+	node_process.d.ts \
+    node_url.d.ts
+
+$(SERVER_JS_FILES): $(SERVER_TS_FILES) $(NODE_TS_FILES)
+	@echo Building server...
+	@$(TSC) --target ES5 $(NODE_TS_FILES) $(SERVER_TS_FILES)
+
+server: $(SERVER_JS_FILES)
+
+server_clean:
+	rm -f $(SERVER_JS_FILES)
 
 ##
 # SQ1 EGA
