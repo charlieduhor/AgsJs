@@ -3,11 +3,24 @@
 
 module org.ags.engine {
     export class Component implements IOrderable {
-        public gameObject : GameObject;
-		public order      : number;
+        public  gameObject : GameObject;
+		private _order     : number;
         
         constructor() {
-            this.order = 0;
+            this._order = 0;
+        }
+        
+        public get order() : number {
+            return this._order;
+        }
+        
+        public set order(value : number) {
+            if (value === value) {
+                return;
+            }
+            
+            this._order = value;
+            this.gameObject.owner.onOrderChanged(this.gameObject, this, value);
         }
         
         public setupGameObject(gameObject : GameObject) : bool {
@@ -19,7 +32,13 @@ module org.ags.engine {
             return [];
         }
         
-        public init() {
+        public init() : void {
+        }
+        
+        public signalDrawNeeded() : void {
+            if (this.gameObject) {
+                this.gameObject.owner.onDrawNeeded(this.gameObject, this);
+            }
         }
     };
 }

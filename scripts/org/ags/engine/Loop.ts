@@ -5,6 +5,7 @@ module org.ags.engine {
     export interface IRunLoop {
         current() : ICell;
         next() : ICell;
+        move(index : number) : ICell;
     }
     
     export interface ILoop {
@@ -27,6 +28,20 @@ module org.ags.engine {
         public next() : ICell {
             if (this.index < this.cells.length) {
                 this.index++;
+            }
+            
+            return this.cells[this.index];
+        }
+        
+        public move(index : number) : ICell {
+            if (index < 0) {
+                this.index = 0;
+            }
+            else if (index >= this.cells.length) {
+                this.index = this.cells.length - 1;
+            }
+            else {
+                this.index = index;
             }
             
             return this.cells[this.index];

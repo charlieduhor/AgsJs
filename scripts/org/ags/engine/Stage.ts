@@ -18,21 +18,16 @@ module org.ags.engine {
         sceneNamespace   : string;
 	};
 	
-    export interface IUpdateFeedback {
-        drawNeeded   : bool;
-        orderChanged : bool;
-    };
-        
 	export interface IUpdatableComponent extends IOrderable {
-		update(feedback : IUpdateFeedback);
+		update() : void;
 	};
 	
 	export interface IDrawableComponent extends IOrderable {
-		drawCanvas(context : CanvasRenderingContext2D);
+		drawCanvas(context : CanvasRenderingContext2D) : void;
 	};
     
     export interface IEventComponent extends IOrderable {
-        handleEvent(feedback : IUpdateFeedback, event : Event) : bool;
+        handleEvent(event : Event) : bool;
     };
 
     export class StageParameters {
@@ -65,7 +60,7 @@ module org.ags.engine {
         }
     };
 
-    class StageLoaderDelegate implements ILoaderDelegate {
+    export class StageLoaderDelegate implements ILoaderDelegate {
         private stage     : Stage;
         private newSet    : Set;
         private sceneName : string;
@@ -369,6 +364,18 @@ module org.ags.engine {
             this.currentScene = this.gameSettings.startupScene;
         }
         
+        public createLoaderDelegate(newSet : Set, sceneName : string) : ILoaderDelegate {
+            return new StageLoaderDelegate(this, newSet, sceneName);
+        }
+        
+        public createLoader(newSet : Set, sceneName : string) : Loader {
+            return new Loader(this.createLoaderDelegate(newSet, sceneName));
+        }
+        
+        public createSet(sceneName : string) : Set {
+            return new Set(this, sceneName);
+        }
+        
         public get currentScene() : string {
             if (this.currentSet === undefined) {
                 return undefined;
@@ -385,8 +392,8 @@ module org.ags.engine {
             }
             
             var that = this;
-            var newSet : Set    = new Set(this, sceneName);
-            var loader : Loader = new Loader(new StageLoaderDelegate(that, newSet, sceneName));
+            var newSet : Set    = this.createSet(sceneName);
+            var loader : Loader = this.createLoader(newSet, sceneName);
 
             loader.load("scenes/" + sceneName + "/" + sceneName + ".json");
             

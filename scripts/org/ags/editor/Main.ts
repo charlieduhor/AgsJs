@@ -1,7 +1,10 @@
 
-module org.ags.editor {
-}
+import engine = org.ags.engine;
+import editor = org.ags.editor;
 
 function EditorMain() {
-    console.log(org.ags.editor.Registry.getEngineClasses());
+    var parameters : engine.StageParameters = new engine.StageParameters();
+    
+    engine.Utilities.parseQueryString(undefined, parameters);
+    return new editor.Stage(parameters);
 }

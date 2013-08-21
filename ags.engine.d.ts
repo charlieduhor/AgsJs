@@ -123,6 +123,7 @@ declare module org.ags.engine {
     interface IRunLoop {
         current(): engine.ICell;
         next(): engine.ICell;
+        move(index: number): engine.ICell;
     }
     interface ILoop {
         run(): IRunLoop;
@@ -136,20 +137,24 @@ declare module org.ags.engine {
 declare module org.ags.engine {
     class Component implements engine.IOrderable {
         public gameObject: engine.GameObject;
-        public order: number;
+        private _order;
         constructor();
+        public order : number;
         public setupGameObject(gameObject: engine.GameObject): boolean;
         public requiredComponents(): any[];
         public init(): void;
+        public signalDrawNeeded(): void;
     }
 }
 declare module org.ags.engine {
     class GameObject {
         public owner: engine.Set;
+        public _parent: GameObject;
         public name: string;
         public components: engine.Component[];
         public transform: engine.components.Transform;
-        constructor(owner: engine.Set, name: string);
+        constructor(owner: engine.Set, parent: GameObject, name: string);
+        public parent : GameObject;
         public stage : engine.Stage;
         public hasComponent(componentClass: any): boolean;
         public addComponentByClass(componentClass: any): engine.Component;
@@ -182,12 +187,17 @@ declare module org.ags.engine {
         public stage: engine.Stage;
         public name: string;
         public sceneScript: engine.IScene;
-        private feedback;
+        private drawNeeded;
+        private orderChanged;
         constructor(stage: engine.Stage, name: string);
-        public createGameObject(name: string): engine.GameObject;
+        public createGameObject(name: string, parent?: engine.GameObject): engine.GameObject;
         private performReorder();
         public loop(): void;
         public dispatchEvent(ev: Event): void;
+        public onParentChanged(go: engine.GameObject, newParent: engine.GameObject): void;
+        public onComponentAdded(go: engine.GameObject, component: engine.Component): void;
+        public onOrderChanged(go: engine.GameObject, component: engine.Component, order: number): void;
+        public onDrawNeeded(go: engine.GameObject, component: engine.Component): void;
     }
 }
 declare module org.ags.engine {
@@ -204,23 +214,33 @@ declare module org.ags.engine {
         startupScene: string;
         sceneNamespace: string;
     }
-    interface IUpdateFeedback {
-        drawNeeded: boolean;
-        orderChanged: boolean;
-    }
     interface IUpdatableComponent extends engine.IOrderable {
-        update(feedback: IUpdateFeedback);
+        update(): void;
     }
     interface IDrawableComponent extends engine.IOrderable {
-        drawCanvas(context: CanvasRenderingContext2D);
+        drawCanvas(context: CanvasRenderingContext2D): void;
     }
     interface IEventComponent extends engine.IOrderable {
-        handleEvent(feedback: IUpdateFeedback, event: Event): boolean;
+        handleEvent(event: Event): boolean;
     }
     class StageParameters {
         public game: string;
         public baseURL: string;
         public selector: string;
+    }
+    class StageLoaderDelegate implements engine.ILoaderDelegate {
+        private stage;
+        private newSet;
+        private sceneName;
+        constructor(stage: Stage, newSet: engine.Set, sceneName: string);
+        public loadJsonAsync(url: string, callbackSuccess: (data: any, url: string) => any, callbackFail: (error: engine.ILoadError) => any): XMLHttpRequest;
+        public progress(percent: number): void;
+        public finished(): void;
+        public error(error: engine.IError): any;
+        public createObject(loader: engine.Loader, className: string, objectInfo: any): any;
+        public createImage(url: string, callbackSuccess: (image: HTMLImageElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLImageElement;
+        public createScript(url: string, callbackSuccess: (image: HTMLScriptElement, url?: string) => any, callbackFail: (error: engine.ILoadError) => any): HTMLScriptElement;
+        public postProcess(loader: engine.Loader, basePath: string, classObject: any, objectInfo: {}): boolean;
     }
     class Stage {
         public game: string;
@@ -244,6 +264,9 @@ declare module org.ags.engine {
         public loadSettings(): void;
         private setSettings(settings);
         public start(): void;
+        public createLoaderDelegate(newSet: engine.Set, sceneName: string): engine.ILoaderDelegate;
+        public createLoader(newSet: engine.Set, sceneName: string): engine.Loader;
+        public createSet(sceneName: string): engine.Set;
         public currentScene : string;
         private performanceLastIntervalTime;
         private performanceSample;
@@ -258,28 +281,26 @@ declare module org.ags.engine {
 }
 declare module org.ags.engine.components {
     class Character extends components.Sprite implements engine.IDrawableComponent, engine.IUpdatableComponent, engine.IEventComponent {
-        private direction;
+        private _direction;
         public loops: engine.ILoop[];
-        public getDirection(): string;
-        public setDirection(feedback: engine.IUpdateFeedback, direction: string): void;
-        public update(feedback: engine.IUpdateFeedback): void;
+        public direction : string;
+        public update(): void;
         public deserialized(): void;
-        public handleEvent(feedback: engine.IUpdateFeedback, event: Event): boolean;
+        public handleEvent(event: Event): boolean;
     }
 }
 declare module org.ags.engine.components {
     class Sprite extends engine.Component implements engine.IDrawableComponent {
-        private loop;
+        private _loop;
         private loopRun;
         private cell;
-        private speedTime;
+        private step;
         public speed: number;
         public running: boolean;
         public drawCanvas(context: CanvasRenderingContext2D): void;
-        public getLoop(): engine.ILoop;
-        public setLoop(feedback: engine.IUpdateFeedback, newLoop: engine.ILoop): void;
+        public loop : engine.ILoop;
         public requiredComponents(): any[];
-        public update(feedback: engine.IUpdateFeedback): void;
+        public update(): void;
     }
 }
 declare module org.ags.engine.components {
@@ -291,8 +312,12 @@ declare module org.ags.engine.components {
 }
 declare module org.ags.engine.components {
     class Transform extends engine.Component {
-        public x: number;
-        public y: number;
+        private _x;
+        private _y;
+        public x : number;
+        public y : number;
+        public setPosition(nx: number, ny: number): void;
+        public move(nx: number, ny: number): void;
         public setupGameObject(gameObject: engine.GameObject): boolean;
     }
 }

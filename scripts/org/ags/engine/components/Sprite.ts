@@ -3,14 +3,14 @@
 
 module org.ags.engine.components {
     export class Sprite extends Component implements IDrawableComponent {
-        private loop      : ILoop;
+        private _loop     : ILoop;
         private loopRun   : IRunLoop;
         private cell      : ICell;
-        private speedTime : number = 0;
+        private step      : number = 0;
         public  speed     : number = 0;
         public  running   : bool   = false;
         
-        drawCanvas(context : CanvasRenderingContext2D) {
+        public drawCanvas(context : CanvasRenderingContext2D) {
             var cell : ICell = this.cell;
             
             if (cell) {
@@ -20,32 +20,29 @@ module org.ags.engine.components {
             }
     	}
         
-        public getLoop() : ILoop {
-            return this.loop;
+        public get loop() : ILoop {
+            return this._loop;
         }
         
-        public setLoop(feedback : IUpdateFeedback, newLoop : ILoop) {
-            if (this.loop === newLoop) {
+        public set loop(newLoop : ILoop) {
+            if (this._loop === newLoop) {
                 return;
             }
             
-            this.loop    = newLoop;
+            this._loop   = newLoop;
             this.cell    = undefined;
             this.loopRun = undefined;
-            
-            if (feedback) {
-                feedback.drawNeeded = true;
-            }
+            this.signalDrawNeeded();
         }
         
         public requiredComponents() : any[] {
             return [ org.ags.engine.components.Transform ];
         }
         
-        public update(feedback : IUpdateFeedback) {
-            if (this.loopRun === undefined && this.loop) {
-                this.loopRun   = this.loop.run();
-                this.speedTime = 0;
+        public update() : void {
+            if (this.loopRun === undefined && this._loop) {
+                this.loopRun = this._loop.run();
+                this.step    = 0;
             }
             
             if (this.cell === undefined && !this.running) {
@@ -55,15 +52,15 @@ module org.ags.engine.components {
             }
             
             if (this.loopRun && this.running) {
-                if (this.speedTime <= 1) {
-                    this.cell      = this.loopRun.next();
-                    this.speedTime = this.speed;
+                if (this.step <= 1) {
+                    this.cell = this.loopRun.next();
+                    this.step = this.speed;
                 }
                 else {
-                    this.speedTime--;
+                    this.step--;
                 }
                 
-                feedback.drawNeeded = true;
+                this.signalDrawNeeded();
             }
         }
     };

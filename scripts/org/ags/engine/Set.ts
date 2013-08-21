@@ -2,11 +2,6 @@
 "use strict";
 
 module org.ags.engine {
-    class UpdateFeedback implements IUpdateFeedback {
-        public drawNeeded   : bool = true;
-        public orderChanged : bool = true;
-    };
-    
     export class Set {
         public updatableComponents : OrderedComponents<IUpdatableComponent> = new OrderedComponents<IUpdatableComponent>();
         public drawableComponents  : OrderedComponents<IDrawableComponent>  = new OrderedComponents<IDrawableComponent>();
@@ -18,15 +13,16 @@ module org.ags.engine {
         public name        : string;
         public sceneScript : IScene;
         
-        private feedback : IUpdateFeedback = new UpdateFeedback();
+        private drawNeeded   : bool = true;
+        private orderChanged : bool = true;
         
         constructor(stage : Stage, name : string) {
             this.stage = stage;
             this.name  = name;
         }
         
-        public createGameObject(name : string) : GameObject {
-            var go       : GameObject = new GameObject(this, name);
+        public createGameObject(name : string, parent? : GameObject) : GameObject {
+            var go       : GameObject = new GameObject(this, parent, name);
             var newIndex : number     = this.gameObjects.length;
             
             this.gameObjects[newIndex] = go;
@@ -34,8 +30,8 @@ module org.ags.engine {
         }
 
         private performReorder() {
-            this.feedback.orderChanged = false;
-            this.feedback.drawNeeded   = true;
+            this.orderChanged = false;
+            this.drawNeeded   = true;
             
             this.updatableComponents.reorder();
             this.drawableComponents.reorder();
@@ -43,23 +39,22 @@ module org.ags.engine {
         }
 
         public loop() {
-            var feedback : IUpdateFeedback = this.feedback;
-            var index    : number, count : number;
+            var index : number, count : number;
             
             // Updates
             var updates : IUpdatableComponent[] = this.updatableComponents.components;
             
             count = updates.length;
             for (index = 0; index < count; index++) {
-                updates[index].update(feedback);
+                updates[index].update();
             }
             
-            if (feedback.orderChanged) {
+            if (this.orderChanged) {
                 this.performReorder();
             }
             
-            if (feedback.drawNeeded) {
-                feedback.drawNeeded = false;
+            if (this.drawNeeded) {
+                this.drawNeeded = false;
                 
                 // Drawable
                 var drawables   : IDrawableComponent[]     = this.drawableComponents.components;
@@ -75,18 +70,52 @@ module org.ags.engine {
         public dispatchEvent(ev : Event) {
             var index    : number, count : number;
             var ec       : OrderedComponents<IEventComponent> = this.eventComponents;
-            var feedback : IUpdateFeedback                    = this.feedback;
             
             count = ec.components.length;
             for (index = 0; index < count; index++) {
-                if (ec.components[index].handleEvent(feedback, ev)) {
+                if (ec.components[index].handleEvent(ev)) {
                     break;
                 }
             }
+        }
+        
+        public onParentChanged(go : GameObject, newParent : GameObject) {
+            // When parent changes, the drawing order might change...
+            this.orderChanged = true;
+        }
+        
+        public onComponentAdded(go : GameObject, component : Component) : void {
+            var m = component["drawCanvas"];
             
-            if (feedback.orderChanged) {
-                this.performReorder();
+            if (m !== undefined) {
+                if (typeof m === "function") {
+                    this.drawableComponents.add(<IDrawableComponent><any>component);
+                }
             }
+            
+            m = component["update"];
+            
+            if (m !== undefined) {
+                if (typeof m === "function") {
+                    this.updatableComponents.add(<IUpdatableComponent><any>component);
+                }
+            }
+            
+            m = component["handleEvent"];
+            
+            if (m !== undefined) {
+                if (typeof m === "function") {
+                    this.eventComponents.add(<IEventComponent><any>component);
+                }
+            }
+        }
+        
+        public onOrderChanged(go : GameObject, component : Component, order : number) {
+            this.orderChanged = true;
+        }
+        
+        public onDrawNeeded(go : GameObject, component : Component) {
+            this.drawNeeded = true;
         }
     };
 }

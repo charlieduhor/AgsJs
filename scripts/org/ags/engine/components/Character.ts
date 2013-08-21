@@ -10,38 +10,41 @@ module org.ags.engine.components {
     }
     
     export class Character extends Sprite implements IDrawableComponent, IUpdatableComponent, IEventComponent {
-        private direction : string;
-        public  loops     : ILoop[];
+        private _direction : string;
+        public  loops      : ILoop[];
 
-        public getDirection() : string {
-            return this.direction;
+        public get direction() : string {
+            return this._direction;
         }
 
-        public setDirection(feedback : IUpdateFeedback, direction : string) {
-            if (this.direction === direction) {
+        public set direction(direction : string) {
+            if (this._direction === direction) {
                 return;
             }
             
-            this.direction = direction;
-            this.setLoop(feedback, this.loops[direction]);
+            this._direction = direction;
+            
+            if (this.loops) {
+                this.loop = this.loops[direction];
+            }
         }
 
-        public update(feedback : IUpdateFeedback) {
-            super.update(feedback);
+        public update() {
+            super.update();
         }
         
         public deserialized() {
-            if (this.direction !== undefined) {
-                this.setLoop(undefined, this.loops[this.direction]);
+            if (this._direction !== undefined) {
+                this.loop = this.loops[this._direction];
             }
         }
         
-        public handleEvent(feedback : IUpdateFeedback, event : Event) : bool {
+        public handleEvent(event : Event) : bool {
             if (event.type === "keydown") {
                 var direction = DirectionMap[(<KeyboardEvent>event).keyCode];
                 
                 if (direction !== undefined) {
-                    this.setDirection(feedback, direction);
+                    this.direction = direction;
                 }
             }
             

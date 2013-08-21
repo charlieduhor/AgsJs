@@ -4,16 +4,31 @@
 module org.ags.engine {
     export class GameObject {
         public owner      : org.ags.engine.Set;
+        public _parent    : GameObject;
         public name       : string;
         public components : Component[] = [];
         public transform  : org.ags.engine.components.Transform;
         
-        constructor(owner : Set, name : string) {
-            this.owner = owner;
-            this.name  = name;
+        constructor(owner : Set, parent : GameObject, name : string) {
+            this.owner   = owner;
+            this.name    = name;
+            this._parent = parent;
         }
         
-        public get stage() {
+        public get parent() : GameObject {
+            return this._parent;
+        }        
+        
+        public set parent(value : GameObject) {
+            if (this._parent === value) {
+                return;
+            }
+            
+            this._parent = value;
+            this.owner.onParentChanged(this, value);
+        }
+        
+        public get stage() : Stage {
             return this.owner.stage;
         }
         
@@ -61,29 +76,7 @@ module org.ags.engine {
             this.components.length    = newIndex + 1;
             this.components[newIndex] = component;
             
-            var m = component["drawCanvas"];
-            
-            if (m !== undefined) {
-                if (typeof m === "function") {
-                    this.owner.drawableComponents.add(<IDrawableComponent><any>component);
-                }
-            }
-            
-            m = component["update"];
-            
-            if (m !== undefined) {
-                if (typeof m === "function") {
-                    this.owner.updatableComponents.add(<IUpdatableComponent><any>component);
-                }
-            }
-            
-            m = component["handleEvent"];
-            
-            if (m !== undefined) {
-                if (typeof m === "function") {
-                    this.owner.eventComponents.add(<IEventComponent><any>component);
-                }
-            }
+            this.owner.onComponentAdded(this, component);
         }
     };
 }
