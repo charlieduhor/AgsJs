@@ -85,15 +85,12 @@ editor_clean:
 ##
 
 SERVER_PLAYER_TS_FILES = \
-    serverCommon.ts \
-    serverPlayer.ts
+    scripts/org/ags/server/common.ts \
+    scripts/org/ags/server/player.ts
 
 SERVER_EDITOR_TS_FILES = \
-    serverCommon.ts \
-    serverEditor.ts
-
-SERVER_PLAYER_JS_FILES = $(SERVER_PLAYER_TS_FILES:.ts=.js)
-SERVER_EDITOR_JS_FILES = $(SERVER_EDITOR_TS_FILES:.ts=.js)
+    scripts/org/ags/server/common.ts \
+    scripts/org/ags/server/editor.ts
 
 serverPlayer.js: $(SERVER_PLAYER_TS_FILES) $(NODE_TS_FILES)
 	@echo Building Server for Player...
