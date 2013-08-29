@@ -3,7 +3,11 @@
 
 module org.ags.server {
     function stringToBoolean(s : string, undefinedValue : bool, nullValue : bool) : bool {
-        switch(s.toLowerCase()){
+        if (typeof s === "string") {
+            s = s.toLowerCase();
+        }
+        
+        switch (s) {
             case "true":
             case "yes":
             case "1":
@@ -54,6 +58,7 @@ module org.ags.server {
                     info["atime"] = stats.atime;
                     
                     if (stats.isSymbolicLink()) {
+                        info["type"] = "symlink";
                         pending++;
                         
                         fs.readlink(fullPath, function(err, target : string) {

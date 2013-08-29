@@ -15,6 +15,7 @@ module org.ags.server {
         ".htm":      "text/html; charset=utf-8",
         ".css":      "text/css",
         ".txt":      "text/plain",
+        ".ts":       "text/typescript",
         ".jpg":      "image/jpeg",
         ".jpeg":     "image/jpeg",
         ".png":      "image/png",

@@ -2,7 +2,12 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="editor.css">
-        <link rel="icon" type="image/png" href="editor-icon.png" />
+        <link rel="icon" type="image/png" href="editor-icon.png">
+        
+        <!-- jQuery -->
+        <script type="text/javascript" src="scripts/externals/jquery.js" defer></script>
+        <script type="text/javascript" src="scripts/externals/jquery.mobile.js" defer></script>
+        <link rel="stylesheet" type="text/css" href="scripts/externals/jquery.mobile.css">
         
         <!-- JavaScript modules -->
         <script type="text/javascript" src="scripts/JavaScriptExtensions.js" defer></script>
@@ -32,6 +37,16 @@
         <script type="text/javascript" src="scripts/org/ags/editor/Main.js" defer></script>
     </head>
     <body onload="EditorMain()">
+        <div data-role="header">
+            <h1>Adventure Game System Editor</h1>
+        </div>
         <div id="stage"></div>
+        <div data-role="footer" class="ui-bar">
+            <div data-role="controlgroup" data-type="horizontal">
+                <a data-theme="a">Run</a>
+                <a data-theme="a" class="ui-disabled">Pause</a>
+                <a data-theme="a" class="ui-disabled">Stop</a>
+            </div>
+        </div>
     </body>
 </html>
