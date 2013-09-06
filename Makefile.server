@@ -1,0 +1,21 @@
+
+SERVER_PLAYER_TS_FILES = \
+    scripts/org/ags/server/common.ts \
+    scripts/org/ags/server/player.ts
+
+SERVER_EDITOR_TS_FILES = \
+    scripts/org/ags/server/common.ts \
+    scripts/org/ags/server/editor.ts
+
+serverPlayer.js: $(SERVER_PLAYER_TS_FILES) $(NODE_TS_FILES)
+	@echo Building Server for Player...
+	@$(TSC) --target ES5 $(NODE_TS_FILES) $(SERVER_PLAYER_TS_FILES) --out serverPlayer.js
+
+serverEditor.js: $(SERVER_EDITOR_TS_FILES) $(NODE_TS_FILES)
+	@echo Building Server for Editor...
+	@$(TSC) --target ES5 $(NODE_TS_FILES) $(SERVER_EDITOR_TS_FILES) --out serverEditor.js
+
+server: serverPlayer.js serverEditor.js
+
+server_clean:
+	rm -f serverPlayer.js serverEditor.js

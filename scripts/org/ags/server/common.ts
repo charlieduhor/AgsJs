@@ -42,7 +42,7 @@ module org.ags.server {
         }
         
         public processIfExists(response : http.ServerResponse, filename : string, callback : (response : http.ServerResponse, filename : string) => any) : void {
-            fs.exists(filename, function(exists : bool) {
+            fs.exists(filename, function(exists : boolean) {
                 if (!exists) {
                     response.writeHead(404, {
                         "Content-Type": "text/plain",

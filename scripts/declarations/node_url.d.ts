@@ -15,7 +15,7 @@ declare module url {
     }
     
     class url {
-        parse  (urlStr : string, parseQueryString? : bool, slashesDenoteHost? : bool) : info;
+        parse  (urlStr : string, parseQueryString? : boolean, slashesDenoteHost? : boolean) : info;
         format (urlObj : {}) : string;
         resolve(p1 : string, p2 : string);
     }

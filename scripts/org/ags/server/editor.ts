@@ -2,7 +2,7 @@
 "use strict";
 
 module org.ags.server {
-    function stringToBoolean(s : string, undefinedValue : bool, nullValue : bool) : bool {
+    function stringToBoolean(s : string, undefinedValue : boolean, nullValue : boolean) : boolean {
         if (typeof s === "string") {
             s = s.toLowerCase();
         }
@@ -37,7 +37,7 @@ module org.ags.server {
             response.end();
         }
         
-        public generateEntryDescription(output : {}, fullPath : string, entry : string, recursive : bool, callback : () => any) {
+        public generateEntryDescription(output : {}, fullPath : string, entry : string, recursive : boolean, callback : () => any) {
             var that              = this;
             var pending  : number = 1;
             var checkEnd : () => any = function() {
@@ -97,7 +97,7 @@ module org.ags.server {
             });
         }
         
-        public generateFolderDescription(dir : string, recursive : bool, callback : (response : {}) => any) {
+        public generateFolderDescription(dir : string, recursive : boolean, callback : (response : {}) => any) {
             var that   = this;
             var output = {};
             var pending  : number    = 1;

@@ -1,0 +1,26 @@
+
+.PHONY: editor editor_clean
+
+EDITOR_TS_FILES = \
+    scripts/org/ags/editor/FileBrowser.ts \
+    scripts/org/ags/editor/Registry.ts \
+    scripts/org/ags/editor/Stage.ts \
+    scripts/org/ags/editor/Main.ts
+
+EDITOR_JS_FILES = $(EDITOR_TS_FILES:.ts=.js)
+EDITOR_D_FILE   = ags.editor.d.ts
+EDITOR_FILE     = ags.editor.js
+
+$(EDITOR_JS_FILES): $(EDITOR_TS_FILES) $(UTILS_D_FILE) $(ENGINE_D_FILE)
+	@echo Building Editor...
+	@$(TSC) --target ES5 $(EDITOR_TS_FILES) $(UTILS_D_FILE) $(ENGINE_D_FILE)
+
+$(EDITOR_D_FILE) $(EDITOR_FILE): $(EDITOR_TS_FILES) $(UTILS_D_FILE) $(ENGINE_D_FILE)
+	@echo Building Editor declaration file...
+	@$(TSC) --target ES5 $(EDITOR_TS_FILES) $(UTILS_D_FILE) $(ENGINE_D_FILE) --out $(EDITOR_FILE) --declaration
+
+editor: $(EDITOR_JS_FILES) $(EDITOR_D_FILE)
+
+editor_clean:
+	rm -f $(EDITOR_JS_FILES)
+	rm -f $(EDITOR_D_FILE) $(EDITOR_FILE)

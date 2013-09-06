@@ -1,13 +1,13 @@
 
 declare module fs {
     class Stats {
-        isFile() : bool;
-        isDirectory() : bool;
-        isBlockDevice() : bool;
-        isCharacterDevice() : bool;
-        isSymbolicLink() : bool;
-        isFIFO() : bool;
-        isSocket() : bool;
+        isFile() : boolean;
+        isDirectory() : boolean;
+        isBlockDevice() : boolean;
+        isCharacterDevice() : boolean;
+        isSymbolicLink() : boolean;
+        isFIFO() : boolean;
+        isSocket() : boolean;
         
         size  : number;
         atime : Date;
@@ -16,7 +16,7 @@ declare module fs {
     }
     
     class fs {
-        exists(path : string, callback : (exists : bool) => any);
+        exists(path : string, callback : (exists : boolean) => any);
         
         stat (path : string, callback : (err : any, stats : Stats) => any);
         lstat(path : string, callback : (err : any, stats : Stats) => any);

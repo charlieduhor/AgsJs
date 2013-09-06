@@ -1,10 +1,7 @@
 
-import engine = org.ags.engine;
-import editor = org.ags.editor;
-
 function EditorMain() {
-    var parameters : engine.StageParameters = new engine.StageParameters();
+    var parameters : org.ags.engine.StageParameters = new org.ags.engine.StageParameters();
     
-    engine.Utilities.parseQueryString(undefined, parameters);
-    return new editor.Stage(parameters);
+    org.ags.utils.QueryString.parse(undefined, parameters);
+    return new org.ags.editor.Stage(parameters);
 }

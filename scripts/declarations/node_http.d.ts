@@ -47,8 +47,8 @@ declare module http {
         on(name : 'close', callback : () => any);
         
         // Properties
-        headersSent : bool;
-        sendDate    : bool;
+        headersSent : boolean;
+        sendDate    : boolean;
         statusCode  : number;
         
         // Methods
@@ -82,8 +82,8 @@ declare module http {
         abort();
         
         setTimeout(timeout : number, callback : () => any);
-        setNoDelay(noDelay? : bool);
-        setSocketKeepAlive(enable? : bool, initialDelay? : number);
+        setNoDelay(noDelay? : boolean);
+        setSocketKeepAlive(enable? : boolean, initialDelay? : number);
         
         write(chunk : any, encoding? : string);
         end(data : any, encoding? : string);
