@@ -7,6 +7,7 @@ UTILS_TS_FILES = \
     scripts/org/ags/utils/JSONDeserializer.ts \
     scripts/org/ags/utils/Loader.ts \
     scripts/org/ags/utils/Log.ts \
+    scripts/org/ags/utils/OrderedComponents.ts \
     scripts/org/ags/utils/Path.ts \
     scripts/org/ags/utils/QueryString.ts \
     scripts/org/ags/utils/String.ts
@@ -23,7 +24,7 @@ $(UTILS_D_FILE) $(UTILS_FILE): $(UTILS_TS_FILES)
 	@echo Building Utility Library declaration file...
 	@$(TSC) --target ES5 $(UTILS_TS_FILES) --out ags.utils.js --declaration
 
-utils: $(UTILS_JS_FILES) $(UTILS_D_FILE) $(UTILS_FILE)
+utils: $(UTILS_JS_FILES) $(UTILS_D_FILE)
 
 utils_clean:
 	rm -f $(UTILS_JS_FILES)

@@ -39,7 +39,7 @@ module org.ags.engine.components {
             }
         }
         
-        public handleEvent(event : Event) : bool {
+        public handleEvent(event : Event) : boolean {
             if (event.type === "keydown") {
                 var direction = DirectionMap[(<KeyboardEvent>event).keyCode];
                 

@@ -1,9 +1,7 @@
 
-import ags = org.ags.engine;
-
 function EngineMain() {
-    var parameters : ags.StageParameters = new ags.StageParameters();
+    var parameters : org.ags.engine.StageParameters = new org.ags.engine.StageParameters();
     
-    ags.Utilities.parseQueryString(undefined, parameters);
-    return new ags.Stage(parameters);
+    org.ags.utils.QueryString.parse(undefined, parameters);
+    return new org.ags.engine.Stage(parameters);
 }

@@ -66,7 +66,7 @@ module org.ags.engine {
 
     export class CellLoop implements ILoop {
         public cells : ICell[];
-        public cycle : bool;
+        public cycle : boolean;
         
         public run() : IRunLoop {
             if (this.cycle) {

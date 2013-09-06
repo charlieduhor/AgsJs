@@ -32,7 +32,7 @@ module org.ags.engine {
             return this.owner.stage;
         }
         
-        public hasComponent(componentClass : any) : bool {
+        public hasComponent(componentClass : any) : boolean {
             var index, count = this.components.length;
             
             for (index = 0; index < count; index++) {

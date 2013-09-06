@@ -52,8 +52,8 @@ module org.ags.engine.components {
             this.signalDrawNeeded();
         }
 
-        public setupGameObject(gameObject : GameObject) : bool {
-            var result : bool = super.setupGameObject(gameObject);
+        public setupGameObject(gameObject : GameObject) : boolean {
+            var result : boolean = super.setupGameObject(gameObject);
             
             if (result) {
                 if (gameObject.transform === undefined) {

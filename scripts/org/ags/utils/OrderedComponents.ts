@@ -1,5 +1,5 @@
 
-module org.ags.engine {
+module org.ags.utils {
 	export interface IOrderable {
 		order : number;
 	};

@@ -6,9 +6,9 @@ module org.ags.engine.components {
         private _loop     : ILoop;
         private loopRun   : IRunLoop;
         private cell      : ICell;
-        private step      : number = 0;
-        public  speed     : number = 0;
-        public  running   : bool   = false;
+        private step      : number  = 0;
+        public  speed     : number  = 0;
+        public  running   : boolean = false;
         
         public drawCanvas(context : CanvasRenderingContext2D) {
             var cell : ICell = this.cell;

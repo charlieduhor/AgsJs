@@ -3,9 +3,9 @@
 
 module org.ags.engine {
     export class Set {
-        public updatableComponents : OrderedComponents<IUpdatableComponent> = new OrderedComponents<IUpdatableComponent>();
-        public drawableComponents  : OrderedComponents<IDrawableComponent>  = new OrderedComponents<IDrawableComponent>();
-        public eventComponents     : OrderedComponents<IEventComponent>     = new OrderedComponents<IEventComponent>();
+        public updatableComponents : org.ags.utils.OrderedComponents<IUpdatableComponent> = new org.ags.utils.OrderedComponents<IUpdatableComponent>();
+        public drawableComponents  : org.ags.utils.OrderedComponents<IDrawableComponent>  = new org.ags.utils.OrderedComponents<IDrawableComponent>();
+        public eventComponents     : org.ags.utils.OrderedComponents<IEventComponent>     = new org.ags.utils.OrderedComponents<IEventComponent>();
         
         public gameObjects : org.ags.engine.GameObject[] = [];
         
@@ -13,8 +13,8 @@ module org.ags.engine {
         public name        : string;
         public sceneScript : IScene;
         
-        private drawNeeded   : bool = true;
-        private orderChanged : bool = true;
+        private drawNeeded   : boolean = true;
+        private orderChanged : boolean = true;
         
         constructor(stage : Stage, name : string) {
             this.stage = stage;
@@ -69,7 +69,7 @@ module org.ags.engine {
         
         public dispatchEvent(ev : Event) {
             var index    : number, count : number;
-            var ec       : OrderedComponents<IEventComponent> = this.eventComponents;
+            var ec       : org.ags.utils.OrderedComponents<IEventComponent> = this.eventComponents;
             
             count = ec.components.length;
             for (index = 0; index < count; index++) {

@@ -2,7 +2,7 @@
 "use strict";
 
 module org.ags.engine {
-    export class Component implements IOrderable {
+    export class Component implements org.ags.utils.IOrderable {
         public  gameObject : GameObject;
 		private _order     : number;
         
@@ -23,7 +23,7 @@ module org.ags.engine {
             this.gameObject.owner.onOrderChanged(this.gameObject, this, value);
         }
         
-        public setupGameObject(gameObject : GameObject) : bool {
+        public setupGameObject(gameObject : GameObject) : boolean {
             this.gameObject = gameObject;
             return true;
         }
