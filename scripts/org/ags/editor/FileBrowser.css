@@ -1,0 +1,85 @@
+
+.ui-navigationController {
+    overflow: hidden;
+    padding:  0 0 0 0;
+}
+
+.ui-navigationControllerContent {
+    overflow: hidden;
+    padding:  0 0 0 0;
+    position: relative;
+}
+
+.ui-navigationControllerPage {
+    overflow-y:     auto;
+    display:        inline-block;
+    vertical-align: top;
+}
+
+.ui-navigationControllerPage > .ui-listview {
+    margin: 0 0 0 0;
+}
+
+@-webkit-keyframes slidein-fromright-500 {
+    from { -webkit-transform: translate3d(500px,0,0); }
+    to   { -webkit-transform: translate3d(0,0,0); }
+}
+
+@-moz-keyframes slidein-fromright-500 {
+    from { -moz-transform: translateX(500px); }
+    to   { -moz-transform: translateX(0); }
+}
+
+@keyframes slidein-fromright-500 {
+    from { transform: translateX(500px); }
+    to   { transform: translateX(0); }
+}
+
+.slidein-500 {
+	-webkit-animation-name:            slidein-fromright-500;
+    -webkit-animation-duration:        150ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    
+	-moz-animation-name:            slidein-fromright-500;
+    -moz-animation-duration:        150ms;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: linear;
+    
+	animation-name:            slidein-fromright-500;
+    animation-duration:        150ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
+
+@-webkit-keyframes slidein-fromleft-500 {
+    from { -webkit-transform: translate3d(-500px,0,0); }
+    to   { -webkit-transform: translate3d(0,0,0); }
+}
+
+@-moz-keyframes slidein-fromleft-500 {
+    from { -moz-transform: translateX(-500px); }
+    to   { -moz-transform: translateX(0); }
+}
+
+@keyframes slidein-fromleft-500 {
+    from { transform: translateX(-500px); }
+    to   { transform: translateX(0); }
+}
+
+.slideout-500 {
+	-webkit-animation-name:            slidein-fromleft-500;
+    -webkit-animation-duration:        150ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    
+	-moz-animation-name:            slidein-fromleft-500;
+    -moz-animation-duration:        150ms;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: linear;
+    
+	animation-name:            slidein-fromleft-500;
+    animation-duration:        150ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
