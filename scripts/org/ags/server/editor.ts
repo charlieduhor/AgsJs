@@ -2,6 +2,8 @@
 "use strict";
 
 module org.ags.server {
+    import utils = org.ags.utils;
+    
     function stringToBoolean(s : string, undefinedValue : boolean, nullValue : boolean) : boolean {
         if (typeof s === "string") {
             s = s.toLowerCase();
@@ -62,7 +64,13 @@ module org.ags.server {
                         pending++;
                         
                         fs.readlink(fullPath, function(err, target : string) {
-                            info["target"] = target;
+                            info["target"]     = target;
+                            info["targetInfo"] = {};
+                            
+                            var targetPath : string = utils.Path.join(utils.Path.dirname(fullPath), target);
+                            
+                            pending++;
+                            that.generateEntryDescription(info, targetPath, "targetInfo", false, checkEnd);
                             checkEnd();
                         });
                     }

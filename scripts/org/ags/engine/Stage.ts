@@ -44,7 +44,7 @@ module org.ags.engine {
         private sceneName : string;
         
         constructor(stage : Stage, newSet : Set, sceneName : string) {
-            super(stage.baseURL);
+            super(stage.url);
             this.stage     = stage;
             this.newSet    = newSet;
             this.sceneName = sceneName;
@@ -125,21 +125,11 @@ module org.ags.engine {
         }
         
         public get loader() : utils.Loader {
-            return new utils.Loader(this.baseURL);
+            return new utils.Loader(this.url);
         }
         
         private setup() {
-            if (this.baseURL.slice(-1) != "/") {
-                this.baseURL += "/";
-            }
-            
-            if (this.url === undefined) {
-                this.url = this.baseURL + this.game;
-            }
-    
-            if (this.url.slice(-1) != "/") {
-                this.url += "/";
-            }
+            this.url = utils.Path.join(this.baseURL, this.game);
         }
         
         private createCanvas() {

@@ -1,9 +1,13 @@
 
+.PHONY: server server_clean
+
 SERVER_PLAYER_TS_FILES = \
     scripts/org/ags/server/common.ts \
     scripts/org/ags/server/player.ts
 
 SERVER_EDITOR_TS_FILES = \
+    scripts/org/ags/utils/Path.ts \
+    scripts/org/ags/utils/String.ts \
     scripts/org/ags/server/common.ts \
     scripts/org/ags/server/editor.ts
 

@@ -39,7 +39,10 @@ module org.ags.utils {
         }
         
         public static join(u1 : string, u2 : string) : string {
-            if (u2.startsWith("/")) {
+            if (u2.length === 0) {
+                return u1;
+            }
+            else if (u2.startsWith("/")) {
                 return Path.simplify(u2);
             }
             else if (u1.endsWith('/')) {

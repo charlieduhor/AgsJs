@@ -16,13 +16,19 @@ module org.ags.utils {
                 return urlParams;
             }
             
+            var i = queryString.indexOf('?');
+            
+            if (i === -1) {
+                return urlParams;
+            }
+            
+            queryString = queryString.substring(i + 1);
+            
             var match;
             var pl        = /\+/g;  // Regex for replacing addition symbol with a space
             var search    = /([^&=]+)=?([^&]*)/g;
             var decode    = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
-            
-            queryString = queryString.substring(1);
-    
+
             while (match = search.exec(queryString)) {
                urlParams[decode(match[1])] = decode(match[2]);
             }

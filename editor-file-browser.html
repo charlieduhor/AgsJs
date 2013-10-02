@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="editor.css">
-        <link rel="icon" type="image/png" href="editor-icon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- jQuery -->
         <script type="text/javascript" src="scripts/externals/jquery.js" defer></script>
@@ -11,48 +10,34 @@
         
         <!-- JavaScript modules -->
         <script type="text/javascript" src="scripts/JavaScriptExtensions.js" defer></script>
+        <script type="text/javascript" src="ags.utils.js" defer></script>
         
-        <!-- Engine TypeScript modules -->
-        <script type="text/javascript" src="scripts/org/ags/engine/Cell.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Component.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Error.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Event.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/GameObject.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Loader.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Log.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Loop.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/OrderedComponents.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Scene.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Set.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Stage.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/Utilities.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/components/Sprite.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/components/Character.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/components/StaticSprite.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/engine/components/Transform.js" defer></script>
-
         <!-- Editor TypeScript modules -->
-        <script type="text/javascript" src="scripts/org/ags/editor/Registry.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/editor/Stage.js" defer></script>
-        <script type="text/javascript" src="scripts/org/ags/editor/Main.js" defer></script>
+        <link rel="stylesheet" type="text/css" href="scripts/org/ags/editor/FileBrowser.css">
+        <script type="text/javascript" src="scripts/org/ags/editor/FileBrowser.js" defer></script>
     </head>
-    <body onload="EditorMain()">
-        <div data-role="header">
-            <h1>Adventure Game System Editor</h1>
-            <a href="#file-browser" data-rel="popup" data-role="button" data-inline="true" data-transition="pop" class="ui-btn-left">Assets</a>
-        </div>
-        <div id="stage"></div>
-        <div data-role="popup" id="file-browser">
-            <iframe data-inset="true" style="min-width: 210px; min-height: 210px; border: 0px;"></iframe>
-            <!--<ul data-role="listview" id="file-browser-root" data-inset="true" style="min-width: 210px;">
-            </ul>-->
-        </div>
-        
-        <div data-role="footer" class="ui-bar">
-            <div data-role="controlgroup" data-type="horizontal">
-                <a data-theme="a">Run</a>
-                <a data-theme="a" class="ui-disabled">Pause</a>
-                <a data-theme="a" class="ui-disabled">Stop</a>
+    <body>
+        <div data-role="page" data-add-back-btn="true">
+            <div data-role="header">
+                <h1>Assets</h1>
+                <a href="#" data-rel="back" id="ags-back-button">Back</a>
+            </div>
+            <div data-role="content">
+                <div id="nav" class="ui-navigationController" style="width: 500px; height: 250px">
+                    <div class="ui-navigationControllerContent">
+                        <div class="ui-navigationControllerPage">
+                            <ul data-role="listview" id="ags-lv-root">
+                                <li><a href="#" class="ags-lv-entry">First</a></li>
+                                <li><a href="#" class="ags-lv-entry">Second</a></li>
+                                <li><a href="#" class="ags-lv-entry">Third</a></li>
+                                <li><a href="#" class="ags-lv-entry">Fourth</a></li>
+                                <li><a href="#" class="ags-lv-entry">Fifth</a></li>
+                                <li><a href="#" class="ags-lv-entry">Sixth</a></li>
+                                <li><a href="#" class="ags-lv-entry">Seventh</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

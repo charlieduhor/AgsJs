@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- jQuery -->
+        <script type="text/javascript" src="scripts/externals/jquery.js"></script>
+        <script type="text/javascript" src="scripts/externals/jquery.mobile.js"></script>
+        <link rel="stylesheet" type="text/css" href="scripts/externals/jquery.mobile.css">
+        
+        <style>
+        
+@-webkit-keyframes slideinfromright {
+    from { -webkit-transform: translate3d(100%,0,0); }
+    to   { -webkit-transform: translate3d(0,0,0); }
+}
+
+@-moz-keyframes slideinfromright {
+    from { -moz-transform: translateX(100%); }
+    to   { -moz-transform: translateX(0); }
+}
+
+@keyframes slideinfromright {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+            
+.slidein {
+	//-webkit-transform:                 translate3d(100%,0,0);
+	-webkit-animation-name:            slideinfromright;
+    -webkit-animation-duration:        5s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    
+	-moz-transform: translateX(0);
+	-moz-animation-name: slideinfromright;
+	transform: translateX(0);
+	animation-name: slideinfromright;
+	font-family: Georgia;
+}
+        </style>
+    </head>
+    <body>
+        <div data-role="page">
+            <p><a id="animate">Animate</a></p>
+            <div style="border-width: 1px; border: 1px solid black; width: 500px; overflow: hidden">
+                <div style="width: 500px; height: 250px; overflow: hidden; position: absolute">
+                    <div id="left" style="display: inline-block; position: absolute; width: 500px;">
+                        <ul data-role="listview">
+                            <li>First</li>
+                            <li>Second</li>
+                        </ul>
+                    </div>
+                    <div id="right" style="display: inline-block; position: absolute; width: 500px;">
+                        <ul data-role="listview">
+                            <li>Thrid</li>
+                            <li>Fourth</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $("#animate").bind("click", function() {
+                $("#right").addClass("slidein");
+            })
+        </script>
+    </body>
+</html>

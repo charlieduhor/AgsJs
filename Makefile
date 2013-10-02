@@ -1,11 +1,9 @@
 #!/usr/bin/make
 TSC = tsc
 
-.PHONY: engine engine_clean editor editor_clean server server_clean sq1ega sq1ega_clean all clean
+all: utils engine editor server sq1ega
 
-all: engine editor server sq1ega
-
-clean: engine_clean editor_clean server_clean sq1ega_clean
+clean: utils_clean engine_clean editor_clean server_clean sq1ega_clean
 
 ##
 # Node.js
@@ -21,7 +19,8 @@ NODE_TS_FILES = \
     scripts/declarations/node_url.d.ts
 
 JQUERY_TS_FILES = \
-    scripts/declarations/jquery.d.ts
+    scripts/declarations/jquery.d.ts \
+    scripts/declarations/jquery.mobile.d.ts
 
 include Makefile.utils
 include Makefile.engine
