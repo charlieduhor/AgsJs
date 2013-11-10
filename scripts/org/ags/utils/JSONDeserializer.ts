@@ -64,7 +64,6 @@ module org.ags.utils {
         }
         
         private loadImage(basePath : string, objectInfo : {}) : HTMLImageElement {
-            var that                   = this;
             var contentLength : number = objectInfo["urlContentLength"];
             
             if (contentLength === undefined) {
@@ -77,11 +76,11 @@ module org.ags.utils {
             try {
                 return this.delegate.loadImage(
                     Path.join(basePath, objectInfo["url"]),
-                    function () {
-                        that.resourceLoadSuccess(contentLength);
+                    () => {
+                        this.resourceLoadSuccess(contentLength);
                     },
-                    function (error : IError) {
-                        that.resourceLoadFailed(contentLength, error);
+                    (error : IError) => {
+                        this.resourceLoadFailed(contentLength, error);
                     });
             }
             catch (e) {
@@ -231,19 +230,18 @@ module org.ags.utils {
         }
 
         public load(url : string) {
-            var that     = this;
             var basePath = Path.dirname(url);
             
             this.loadingResources++;
             
             try {
                 this.delegate.loadJsonAsync(url,
-                    function (data : any) {
-                        that.createObjects(basePath, data);
-                        that.resourceLoadSuccess(0);
+                    (data : any) => {
+                        this.createObjects(basePath, data);
+                        this.resourceLoadSuccess(0);
                     },
-                    function (error : ILoadError) {
-                        that.resourceLoadFailed(0, error);
+                    (error : ILoadError) => {
+                        this.resourceLoadFailed(0, error);
                     });
             }
             catch (e) {
@@ -252,18 +250,17 @@ module org.ags.utils {
         }
         
         public loadScript(url : string) : HTMLScriptElement {
-            var that     = this;
             var basePath = Path.dirname(url);
             
             this.loadingResources++;
             
             try {
                 return this.delegate.loadScript(url,
-                    function (data : HTMLScriptElement) {
-                        that.resourceLoadSuccess(0);
+                    (data : HTMLScriptElement) => {
+                        this.resourceLoadSuccess(0);
                     },
-                    function (error : ILoadError) {
-                        that.resourceLoadFailed(0, error);
+                    (error : ILoadError) => {
+                        this.resourceLoadFailed(0, error);
                     });
             }
             catch (e) {

@@ -1,0 +1,21 @@
+
+.ui-navigationController {
+    overflow: hidden;
+    padding:  0 0 0 0;
+}
+
+.ui-navigationControllerContent {
+    overflow: hidden;
+    padding:  0 0 0 0;
+    position: relative;
+}
+
+.ui-navigationControllerPage {
+    overflow-y:     auto;
+    display:        inline-block;
+    vertical-align: top;
+}
+
+.ui-navigationControllerPage > .ui-listview {
+    margin: 0 0 0 0;
+}

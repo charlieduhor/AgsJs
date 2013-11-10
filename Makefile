@@ -1,9 +1,9 @@
 #!/usr/bin/make
 TSC = tsc
 
-all: utils engine editor server sq1ega
+all: utils engine editor server sq1ega navctl
 
-clean: utils_clean engine_clean editor_clean server_clean sq1ega_clean
+clean: utils_clean engine_clean editor_clean server_clean sq1ega_clean navctl_clean
 
 ##
 # Node.js
@@ -22,8 +22,12 @@ JQUERY_TS_FILES = \
     scripts/declarations/jquery.d.ts \
     scripts/declarations/jquery.mobile.d.ts
 
+OUTDIR = scripts/compiled
+
 include Makefile.utils
 include Makefile.engine
+
+include Makefile.navctl
 include Makefile.editor
 include Makefile.server
 include Games/sq1ega/Makefile

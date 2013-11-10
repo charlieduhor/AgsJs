@@ -1,0 +1,20 @@
+
+.PHONY: navctl navctl_clean
+
+NAVCTL_TS_FILES = \
+    scripts/org/navctl/NavigationController.ts
+
+NAVCTL_D_FILE   = $(OUTDIR)/navctl.d.ts
+NAVCTL_M_FILE   = $(OUTDIR)/navctl.js.map
+NAVCTL_FILE     = $(OUTDIR)/navctl.js
+
+$(NAVCTL_FILE): $(NAVCTL_TS_FILES) $(UTILS_D_FILE) $(JQUERY_TS_FILES)
+	@echo Building Navigation Controller Library...
+	@$(TSC) --target ES5 $(NAVCTL_TS_FILES) $(UTILS_D_FILE) $(JQUERY_TS_FILES) --out $(NAVCTL_FILE) --sourcemap --declaration
+
+$(NAVCTL_D_FILE) $(NAVCTL_M_FILE): $(NAVCTL_FILE)
+
+navctl: $(NAVCTL_JS_FILES) $(NAVCTL_D_FILE) $(NAVCTL_M_FILE)
+
+navctl_clean:
+	rm -f $(NAVCTL_D_FILE) $(NAVCTL_M_FILE) $(NAVCTL_FILE)

@@ -4,6 +4,7 @@ declare module node.process {
         env : any;
         
         cwd() : string;
+        chdir(newCwd : string): void;
     }
 }
 

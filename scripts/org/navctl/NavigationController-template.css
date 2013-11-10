@@ -1,0 +1,64 @@
+
+@-webkit-keyframes slidein-fromright-WIDTH {
+    from { -webkit-transform: translate3d(WIDTHpx,0,0); }
+    to   { -webkit-transform: translate3d(0,0,0); }
+}
+
+@-moz-keyframes slidein-fromright-WIDTH {
+    from { -moz-transform: translateX(WIDTHpx); }
+    to   { -moz-transform: translateX(0); }
+}
+
+@keyframes slidein-fromright-WIDTH {
+    from { transform: translateX(WIDTHpx); }
+    to   { transform: translateX(0); }
+}
+
+.slidein-WIDTH {
+	-webkit-animation-name:            slidein-fromright-WIDTH;
+    -webkit-animation-duration:        150ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    
+	-moz-animation-name:            slidein-fromright-WIDTH;
+    -moz-animation-duration:        150ms;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: linear;
+    
+	animation-name:            slidein-fromright-WIDTH;
+    animation-duration:        150ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
+
+@-webkit-keyframes slidein-fromleft-WIDTH {
+    from { -webkit-transform: translate3d(-WIDTHpx,0,0); }
+    to   { -webkit-transform: translate3d(0,0,0); }
+}
+
+@-moz-keyframes slidein-fromleft-WIDTH {
+    from { -moz-transform: translateX(-WIDTHpx); }
+    to   { -moz-transform: translateX(0); }
+}
+
+@keyframes slidein-fromleft-WIDTH {
+    from { transform: translateX(-WIDTHpx); }
+    to   { transform: translateX(0); }
+}
+
+.slideout-WIDTH {
+	-webkit-animation-name:            slidein-fromleft-WIDTH;
+    -webkit-animation-duration:        150ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: linear;
+    
+	-moz-animation-name:            slidein-fromleft-WIDTH;
+    -moz-animation-duration:        150ms;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: linear;
+    
+	animation-name:            slidein-fromleft-WIDTH;
+    animation-duration:        150ms;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}

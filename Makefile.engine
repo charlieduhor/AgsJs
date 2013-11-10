@@ -16,19 +16,17 @@ ENGINE_TS_FILES = \
     scripts/org/ags/engine/components/Transform.ts \
     scripts/org/ags/engine/Main.ts
 
-ENGINE_JS_FILES = $(ENGINE_TS_FILES:.ts=.js)
-ENGINE_D_FILE   = ags.engine.d.ts
-ENGINE_FILE     = ags.engine.js
+ENGINE_D_FILE   = $(OUTDIR)/ags.engine.d.ts
+ENGINE_M_FILE   = $(OUTDIR)/ags.engine.js.map
+ENGINE_FILE     = $(OUTDIR)/ags.engine.js
 
-$(ENGINE_JS_FILES): $(ENGINE_TS_FILES) $(UTILS_D_FILE)
-	@echo Building Engine...
-	@$(TSC) --target ES5 $(ENGINE_TS_FILES) $(UTILS_D_FILE)
+$(ENGINE_FILE): $(ENGINE_TS_FILES) $(UTILS_D_FILE)
+	@echo Building Engine Library...
+	@$(TSC) --target ES5 $(ENGINE_TS_FILES) $(UTILS_D_FILE) --out $(ENGINE_FILE) --sourcemap --declaration
 
-$(ENGINE_D_FILE) $(ENGINE_FILE): $(ENGINE_TS_FILES) $(UTILS_D_FILE)
-	@echo Building Engine declaration file...
-	@$(TSC) --target ES5 $(ENGINE_TS_FILES) $(UTILS_D_FILE) --out $(ENGINE_FILE) --declaration
+$(ENGINE_D_FILE) $(ENGINE_M_FILE): $(ENGINE_FILE)
 
-engine: $(ENGINE_JS_FILES) $(ENGINE_D_FILE) $(ENGINE_FILE)
+engine: $(ENGINE_M_FILE) $(ENGINE_D_FILE) $(ENGINE_FILE)
 
 engine_clean:
 	rm -f $(ENGINE_JS_FILES)

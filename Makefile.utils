@@ -12,20 +12,21 @@ UTILS_TS_FILES = \
     scripts/org/ags/utils/QueryString.ts \
     scripts/org/ags/utils/String.ts
 
-UTILS_JS_FILES = $(UTILS_TS_FILES:.ts=.js)
-UTILS_D_FILE   = ags.utils.d.ts
-UTILS_FILE     = ags.utils.ts
+UTILS_D_FILE = $(OUTDIR)/ags.utils.d.ts
+UTILS_M_FILE = $(OUTDIR)/ags.utils.js.map
+UTILS_FILE   = $(OUTDIR)/ags.utils.js
 
 $(UTILS_JS_FILES): $(UTILS_TS_FILES)
 	@echo Building Utility Library...
 	@$(TSC) --target ES5 $(UTILS_TS_FILES)
 
-$(UTILS_D_FILE) $(UTILS_FILE): $(UTILS_TS_FILES)
-	@echo Building Utility Library declaration file...
-	@$(TSC) --target ES5 $(UTILS_TS_FILES) --out ags.utils.js --declaration
+$(UTILS_FILE): $(UTILS_TS_FILES)
+	@echo Building Utility Library...
+	@$(TSC) --target ES5 $(UTILS_TS_FILES) --out $(UTILS_FILE) --sourcemap --declaration
 
-utils: $(UTILS_JS_FILES) $(UTILS_D_FILE)
+$(UTILS_D_FILE) $(UTILS_M_FILE): $(UTILS_FILE)
+
+utils: $(UTILS_JS_FILES) $(UTILS_D_FILE) $(UTILS_M_FILE)
 
 utils_clean:
-	rm -f $(UTILS_JS_FILES)
-	rm -f $(UTILS_D_FILE) $(UTILS_FILE)
+	rm -f $(UTILS_D_FILE) $(UTILS_FILE) $(UTILS_M_FILE)
